@@ -1,3 +1,5 @@
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -52,15 +54,15 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  Future<void> _incrementCounter() async {
+    AudioCache audioCache = AudioCache();
+    //AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
+    AudioPlayer.logEnabled = true;
+
+    await audioCache.play("audio/A0.mp3", mode: PlayerMode.LOW_LATENCY);
+    await audioCache.play("audio/D1.mp3", mode: PlayerMode.LOW_LATENCY);
+    await audioCache.play("audio/F1.mp3", mode: PlayerMode.LOW_LATENCY);
+    await audioCache.play("audio/G1.mp3", mode: PlayerMode.LOW_LATENCY);
   }
 
   @override
