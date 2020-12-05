@@ -71,8 +71,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // Screen State
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+    double panelLineWidth = 2;
+    Color borderColor = Colors.grey;
+    Color backgroundColor = Colors.black;
+    Color mainColor = Color.fromRGBO(58, 221, 243, 1);
+
+    Border mainBorder = Border(
+        top: BorderSide(width: panelLineWidth, color: borderColor),
+        left: BorderSide(width: panelLineWidth, color: borderColor),
+        bottom: BorderSide(width: panelLineWidth, color: borderColor));
+    // borderRadius: BorderRadius.circular(12)
 
     return Scaffold(
         body: Column(
@@ -84,61 +95,96 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         // Chords Settings
         Container(
-          color: Colors.blueAccent,
+          color: backgroundColor,
           height: 3 * screenHeight / 4,
           child: Row(
             children: [
               // Settings
               Container(
-                  color: Colors.black,
+                  decoration:
+                      BoxDecoration(color: backgroundColor, border: mainBorder),
                   width: screenWidth / 6,
                   child: Column(
                     children: [
                       // Title
-                      PreferredSize(
-                          preferredSize: Size.fromRadius(screenWidth / 6),
-                          child: Container(
-                            width: screenHeight / 6,
-                            color: Colors.blueGrey,
-                            child: RichText(
-                              text: TextSpan(
-                                  text: 'Settings',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20)),
-                            ),
-                          )),
+                      createTitle("Settings", mainBorder, screenWidth)
                     ],
                   )),
               // Notes
               Container(
-                color: Colors.white,
-                width: screenWidth / 6,
-              ),
+                  decoration:
+                      BoxDecoration(color: backgroundColor, border: mainBorder),
+                  width: screenWidth / 6,
+                  child: Column(
+                    children: [
+                      // Title
+                      createTitle("Notes", mainBorder, screenWidth)
+                    ],
+                  )),
               // Keys
               Container(
-                color: Colors.red,
-                width: screenWidth / 6,
-              ),
+                  decoration:
+                      BoxDecoration(color: backgroundColor, border: mainBorder),
+                  width: screenWidth / 6,
+                  child: Column(
+                    children: [
+                      // Title
+                      createTitle("Keys", mainBorder, screenWidth)
+                    ],
+                  )),
               // Tensions
               Container(
-                color: Colors.blue,
-                width: screenWidth / 6,
-              ),
+                  decoration:
+                      BoxDecoration(color: backgroundColor, border: mainBorder),
+                  width: screenWidth / 6,
+                  child: Column(
+                    children: [
+                      // Title
+                      createTitle("Tensions", mainBorder, screenWidth)
+                    ],
+                  )),
               // Inversions
               Container(
-                color: Colors.yellow,
-                width: screenWidth / 6,
-              ),
+                  decoration:
+                      BoxDecoration(color: backgroundColor, border: mainBorder),
+                  width: screenWidth / 6,
+                  child: Column(
+                    children: [
+                      // Title
+                      createTitle("Inversions", mainBorder, screenWidth)
+                    ],
+                  )),
               // Arpeggios
               Container(
-                color: Colors.orange,
-                width: screenWidth / 6,
-              ),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          width: panelLineWidth, color: borderColor)),
+                  width: screenWidth / 6,
+                  child: Column(
+                    children: [
+                      // Title
+                      createTitle("Arpeggios", mainBorder, screenWidth)
+                    ],
+                  )),
             ],
           ),
         ),
       ],
     ));
   }
+}
+
+Container createTitle(String title, Border mainBorder, double screenWidth) {
+  return Container(
+    decoration: BoxDecoration(color: Colors.blueGrey, border: mainBorder),
+    width: screenWidth / 6,
+    height: 40.0,
+    child: Center(
+        child: RichText(
+      text: TextSpan(
+          text: title,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+      //textAlign: TextAlign.center,
+    )),
+  );
 }
