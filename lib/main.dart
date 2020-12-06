@@ -88,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
       children: [
         // Chords Panel
         Container(
-          color: mainColor,
+          color: Colors.white,
           height: screenHeight / 4,
         ),
         Container(
@@ -102,9 +102,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: backgroundColor, border: mainBorder),
                     width: screenWidth / 6,
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Title
-                        createTitle("Settings", mainBorder, screenWidth)
+                        createTitle("Settings", mainBorder, screenWidth),
+                        Expanded(child: listViewSettings())
                       ],
                     )),
                 keyContent(screenWidth, screenHeight, panelLineWidth,
@@ -118,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 Container createTitle(String title, Border mainBorder, double screenWidth) {
   return Container(
-    decoration: BoxDecoration(color: Colors.blueGrey, border: mainBorder),
+    decoration: BoxDecoration(color: Colors.transparent, border: mainBorder),
     width: screenWidth / 6,
     height: 40.0,
     child: Center(
@@ -139,6 +140,32 @@ Row keyContent(
     Color backgroundColor,
     Color mainColor,
     Border mainBorder) {
+  // List
+  const List<String> Notes = [
+    "C",
+    "C♯/D♭",
+    "D",
+    "D♯/E♭",
+    "E",
+    "F",
+    "F♯/G♭",
+    "G",
+    "G♯/A♭",
+    "A",
+    "A♯/B♭",
+    "B",
+    "B♯/C♭",
+    "C"
+  ];
+
+  const List<String> Keys = ["MAJ", "MIN", "DIM", "AUG"];
+
+  const List<String> Tensions = ["1", "2", "3", "4"];
+
+  const List<String> Inversions = ["R", "1", "2", "3"];
+
+  const List<String> Arpeggios = ["1", "2", "3", "4", "5", "6", "7", "8"];
+
   return Row(
     children: [
       // Notes
@@ -146,9 +173,10 @@ Row keyContent(
           decoration: BoxDecoration(color: backgroundColor, border: mainBorder),
           width: screenWidth / 6,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              // Title
-              createTitle("Notes", mainBorder, screenWidth)
+              createTitle("Notes", mainBorder, screenWidth),
+              Expanded(child: listViewItems(Notes))
             ],
           )),
       // Keys
@@ -156,9 +184,10 @@ Row keyContent(
           decoration: BoxDecoration(color: backgroundColor, border: mainBorder),
           width: screenWidth / 6,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              // Title
-              createTitle("Keys", mainBorder, screenWidth)
+              createTitle("Keys", mainBorder, screenWidth),
+              Expanded(child: listViewItems(Keys))
             ],
           )),
       // Tensions
@@ -166,9 +195,10 @@ Row keyContent(
           decoration: BoxDecoration(color: backgroundColor, border: mainBorder),
           width: screenWidth / 6,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              // Title
-              createTitle("Tensions", mainBorder, screenWidth)
+              createTitle("Tensions", mainBorder, screenWidth),
+              Expanded(child: listViewItems(Tensions))
             ],
           )),
       // Inversions
@@ -176,9 +206,10 @@ Row keyContent(
           decoration: BoxDecoration(color: backgroundColor, border: mainBorder),
           width: screenWidth / 6,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              // Title
-              createTitle("Inversions", mainBorder, screenWidth)
+              createTitle("Inversions", mainBorder, screenWidth),
+              Expanded(child: listViewItems(Inversions))
             ],
           )),
       // Arpeggios
@@ -187,11 +218,147 @@ Row keyContent(
               border: Border.all(width: panelLineWidth, color: borderColor)),
           width: screenWidth / 6,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              // Title
-              createTitle("Arpeggios", mainBorder, screenWidth)
+              createTitle("Arpeggios", mainBorder, screenWidth),
+              Expanded(child: listViewItems(Arpeggios))
             ],
           )),
     ],
   );
 }
+
+Widget listViewSettings() {
+  return ListView(
+    padding: const EdgeInsets.all(8),
+    shrinkWrap: true,
+    children: <Widget>[
+      Container(
+        height: 50,
+        child: Center(
+            child: RichText(
+          text: TextSpan(
+              text: 'Treble',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.orangeAccent,
+                  fontSize: 25)),
+        )),
+      ),
+      Container(
+        height: 50,
+        child: Center(
+            child: RichText(
+          text: TextSpan(
+              text: 'Bass',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepPurpleAccent,
+                  fontSize: 25)),
+        )),
+      ),
+      Container(
+        height: 50,
+        child: Center(
+            child: RichText(
+          text: TextSpan(
+              text: 'Beats',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.lightBlueAccent,
+                  fontSize: 25)),
+        )),
+      ),
+      SizedBox(
+        height: 10.0,
+      ),
+      Container(
+        decoration:
+            BoxDecoration(border: Border.all(width: 2, color: Colors.white)),
+        height: 30,
+        child: Center(
+            child: RichText(
+          text: TextSpan(
+              text: '120BPM',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+        )),
+      ),
+      SizedBox(
+        height: 10.0,
+      ),
+      const Divider(
+        color: Colors.grey,
+        //height: 20,
+        thickness: 1,
+      ),
+      IconButton(
+        icon: Icon(Icons.play_circle_outline),
+        color: Colors.greenAccent,
+        iconSize: 50.0,
+        //tooltip: 'Increase volume by 10',
+        onPressed: () {},
+      ),
+      IconButton(
+        icon: Icon(Icons.pause_circle_outline),
+        color: Colors.limeAccent,
+        iconSize: 50.0,
+        //tooltip: 'Increase volume by 10',
+        onPressed: () {},
+      ),
+      const Divider(
+        color: Colors.grey,
+        //height: 20,
+        thickness: 1,
+      ),
+      IconButton(
+        icon: Icon(Icons.delete),
+        color: Colors.red,
+        iconSize: 40.0,
+        //tooltip: 'Increase volume by 10',
+        onPressed: () {},
+      ),
+    ],
+  );
+}
+
+Widget listViewItems(List<String> itemList) {
+  Color color = Color.fromRGBO(0, 255, 255, 0.8);
+
+  return ListView.builder(
+      padding: const EdgeInsets.all(8),
+      itemCount: itemList.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Column(
+          children: [
+            Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: color, width: 1),
+                    borderRadius: BorderRadius.circular(12)),
+                height: 50,
+                child: Center(
+                    child: RichText(
+                  text: TextSpan(
+                      text: itemList[index],
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: color,
+                          fontSize: 25)),
+                ))),
+            SizedBox(
+              height: 10.0,
+            ),
+          ],
+        );
+      });
+}
+
+// Container(
+//           decoration: const BoxDecoration(
+//             gradient: LinearGradient(
+//               colors: <Color>[
+//                 Color(0xFF0D47A1),
+//                 Color(0xFF1976D2),
+//                 Color(0xFF42A5F5),
+//               ],
+//             ),
+//           ),
