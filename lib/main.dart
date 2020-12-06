@@ -56,8 +56,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
   Future<void> _incrementCounter() async {
     AudioCache audioCache = AudioCache();
     //AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
@@ -77,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
     double panelLineWidth = 2;
     Color borderColor = Colors.grey;
     Color backgroundColor = Colors.black;
-    Color mainColor = Color.fromRGBO(58, 221, 243, 1);
+    Color mainColor = Color.fromRGBO(58, 221, 243, 0.5);
 
     Border mainBorder = Border(
         top: BorderSide(width: panelLineWidth, color: borderColor),
@@ -90,85 +88,29 @@ class _MyHomePageState extends State<MyHomePage> {
       children: [
         // Chords Panel
         Container(
-          color: Colors.greenAccent,
+          color: mainColor,
           height: screenHeight / 4,
         ),
-        // Chords Settings
         Container(
-          color: backgroundColor,
-          height: 3 * screenHeight / 4,
-          child: Row(
-            children: [
-              // Settings
-              Container(
-                  decoration:
-                      BoxDecoration(color: backgroundColor, border: mainBorder),
-                  width: screenWidth / 6,
-                  child: Column(
-                    children: [
-                      // Title
-                      createTitle("Settings", mainBorder, screenWidth)
-                    ],
-                  )),
-              // Notes
-              Container(
-                  decoration:
-                      BoxDecoration(color: backgroundColor, border: mainBorder),
-                  width: screenWidth / 6,
-                  child: Column(
-                    children: [
-                      // Title
-                      createTitle("Notes", mainBorder, screenWidth)
-                    ],
-                  )),
-              // Keys
-              Container(
-                  decoration:
-                      BoxDecoration(color: backgroundColor, border: mainBorder),
-                  width: screenWidth / 6,
-                  child: Column(
-                    children: [
-                      // Title
-                      createTitle("Keys", mainBorder, screenWidth)
-                    ],
-                  )),
-              // Tensions
-              Container(
-                  decoration:
-                      BoxDecoration(color: backgroundColor, border: mainBorder),
-                  width: screenWidth / 6,
-                  child: Column(
-                    children: [
-                      // Title
-                      createTitle("Tensions", mainBorder, screenWidth)
-                    ],
-                  )),
-              // Inversions
-              Container(
-                  decoration:
-                      BoxDecoration(color: backgroundColor, border: mainBorder),
-                  width: screenWidth / 6,
-                  child: Column(
-                    children: [
-                      // Title
-                      createTitle("Inversions", mainBorder, screenWidth)
-                    ],
-                  )),
-              // Arpeggios
-              Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          width: panelLineWidth, color: borderColor)),
-                  width: screenWidth / 6,
-                  child: Column(
-                    children: [
-                      // Title
-                      createTitle("Arpeggios", mainBorder, screenWidth)
-                    ],
-                  )),
-            ],
-          ),
-        ),
+            color: backgroundColor,
+            height: 3 * screenHeight / 4,
+            child: Row(
+              children: [
+                // Chords Settings
+                Container(
+                    decoration: BoxDecoration(
+                        color: backgroundColor, border: mainBorder),
+                    width: screenWidth / 6,
+                    child: Column(
+                      children: [
+                        // Title
+                        createTitle("Settings", mainBorder, screenWidth)
+                      ],
+                    )),
+                keyContent(screenWidth, screenHeight, panelLineWidth,
+                    borderColor, backgroundColor, mainColor, mainBorder),
+              ],
+            )),
       ],
     ));
   }
@@ -186,5 +128,70 @@ Container createTitle(String title, Border mainBorder, double screenWidth) {
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
       //textAlign: TextAlign.center,
     )),
+  );
+}
+
+Row keyContent(
+    double screenWidth,
+    double screenHeight,
+    double panelLineWidth,
+    Color borderColor,
+    Color backgroundColor,
+    Color mainColor,
+    Border mainBorder) {
+  return Row(
+    children: [
+      // Notes
+      Container(
+          decoration: BoxDecoration(color: backgroundColor, border: mainBorder),
+          width: screenWidth / 6,
+          child: Column(
+            children: [
+              // Title
+              createTitle("Notes", mainBorder, screenWidth)
+            ],
+          )),
+      // Keys
+      Container(
+          decoration: BoxDecoration(color: backgroundColor, border: mainBorder),
+          width: screenWidth / 6,
+          child: Column(
+            children: [
+              // Title
+              createTitle("Keys", mainBorder, screenWidth)
+            ],
+          )),
+      // Tensions
+      Container(
+          decoration: BoxDecoration(color: backgroundColor, border: mainBorder),
+          width: screenWidth / 6,
+          child: Column(
+            children: [
+              // Title
+              createTitle("Tensions", mainBorder, screenWidth)
+            ],
+          )),
+      // Inversions
+      Container(
+          decoration: BoxDecoration(color: backgroundColor, border: mainBorder),
+          width: screenWidth / 6,
+          child: Column(
+            children: [
+              // Title
+              createTitle("Inversions", mainBorder, screenWidth)
+            ],
+          )),
+      // Arpeggios
+      Container(
+          decoration: BoxDecoration(
+              border: Border.all(width: panelLineWidth, color: borderColor)),
+          width: screenWidth / 6,
+          child: Column(
+            children: [
+              // Title
+              createTitle("Arpeggios", mainBorder, screenWidth)
+            ],
+          )),
+    ],
   );
 }
