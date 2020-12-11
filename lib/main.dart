@@ -56,16 +56,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Future<void> _incrementCounter() async {
-    AudioCache audioCache = AudioCache();
-    //AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
-    AudioPlayer.logEnabled = true;
+  // Future<void> _incrementCounter() async {
+  //   AudioCache audioCache = AudioCache();
+  //   //AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
+  //   AudioPlayer.logEnabled = true;
 
-    await audioCache.play("audio/A0.mp3", mode: PlayerMode.LOW_LATENCY);
-    await audioCache.play("audio/D1.mp3", mode: PlayerMode.LOW_LATENCY);
-    await audioCache.play("audio/F1.mp3", mode: PlayerMode.LOW_LATENCY);
-    await audioCache.play("audio/G1.mp3", mode: PlayerMode.LOW_LATENCY);
-  }
+  //   await audioCache.play("audio/A0.mp3", mode: PlayerMode.LOW_LATENCY);
+  //   await audioCache.play("audio/D1.mp3", mode: PlayerMode.LOW_LATENCY);
+  //   await audioCache.play("audio/F1.mp3", mode: PlayerMode.LOW_LATENCY);
+  //   await audioCache.play("audio/G1.mp3", mode: PlayerMode.LOW_LATENCY);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Container(
                     decoration: BoxDecoration(
                         color: backgroundColor, border: mainBorder),
-                    width: screenWidth / 10,
+                    width: 2 * (screenWidth / 11),
                     child: listViewSettings()),
                 keyContent(screenWidth, screenHeight, panelLineWidth,
                     borderColor, backgroundColor, mainColor, mainBorder),
@@ -142,16 +142,16 @@ Row keyContent(
     "A A♯/B♭ B",
   ];
 
-  const List<String> Keys = ["MAJ", "MIN", "DIM", "AUG"];
+  const List<String> Keys = ["△", "-", "O", "+"];
 
-  const List<String> Tensions = ["1", "2 3", "4 5 6", "7"];
+  const List<String> Tensions = ["♭7 7", "♭9 9 ♯9", "11 ♯11", "♭13 13"];
 
   const List<String> Inversions = ["R", "1", "2", "3"];
 
   const List<String> Arpeggios = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
   double settingsPanelHeight = 3 * screenHeight / 4;
-  double columnWidth = screenWidth / 10;
+  double columnWidth = screenWidth / 11;
   return Row(
     children: [
       // Notes
@@ -306,12 +306,13 @@ Widget listViewItems(List<String> itemList, double columnWidth, int columnCount,
               width: ((columnCount * columnWidth) / splitItem.length) - 10.0,
               child: Center(
                   child: RichText(
+                textAlign: TextAlign.justify,
                 text: TextSpan(
                     text: i,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: color,
-                        fontSize: 20)),
+                        fontSize: 25)),
               ))));
         }
 
