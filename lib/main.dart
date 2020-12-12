@@ -184,7 +184,7 @@ Row keyContent(
               border: Border.all(width: panelLineWidth, color: borderColor)),
           width: columnWidth,
           child: listViewItems(Arpeggios, columnWidth, 1,
-              getButtonHeight(settingsPanelHeight, 5))),
+              getButtonHeight(settingsPanelHeight, 4))),
     ],
   );
 }
@@ -289,8 +289,12 @@ Widget listViewSettings() {
 Widget listViewItems(List<String> itemList, double columnWidth, int columnCount,
     double buttonHeight) {
   Color color = Color.fromRGBO(0, 255, 255, 0.8);
+  var scrollState = itemList.length > 4
+      ? AlwaysScrollableScrollPhysics()
+      : NeverScrollableScrollPhysics();
 
   return ListView.builder(
+      physics: scrollState,
       padding: const EdgeInsets.all(8),
       itemCount: itemList.length,
       itemBuilder: (BuildContext context, int index) {
@@ -303,7 +307,7 @@ Widget listViewItems(List<String> itemList, double columnWidth, int columnCount,
                   border: Border.all(color: color, width: 1),
                   borderRadius: BorderRadius.circular(12)),
               height: buttonHeight,
-              width: ((columnCount * columnWidth) / splitItem.length) - 10.0,
+              width: ((columnCount * columnWidth) / splitItem.length) - 15.0,
               child: Center(
                   child: RichText(
                 textAlign: TextAlign.justify,
@@ -319,8 +323,8 @@ Widget listViewItems(List<String> itemList, double columnWidth, int columnCount,
         Widget wrapping = Wrap(
           direction: Axis.horizontal,
           alignment: WrapAlignment.end,
-          spacing: 1.0,
-          runSpacing: 1.0,
+          spacing: 5.0,
+          runSpacing: 5.0,
           children: widgetList,
         );
 
@@ -330,7 +334,7 @@ Widget listViewItems(List<String> itemList, double columnWidth, int columnCount,
           children: [
             wrapping,
             SizedBox(
-              height: 10.0,
+              height: 5.0,
             ),
           ],
         ));
