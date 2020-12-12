@@ -83,14 +83,66 @@ class _MyHomePageState extends State<MyHomePage> {
         bottom: BorderSide(width: panelLineWidth, color: borderColor));
     // borderRadius: BorderRadius.circular(12)
 
+    List<ChordObject> chordList = new List<ChordObject>();
+    chordList
+        .add(new ChordObject("c", "c", "c", "c", "c", "c", "c", "c", "c", "c"));
+
     return Scaffold(
         body: Column(
       children: [
         // Chords Panel
         Container(
-          color: Colors.white,
           height: screenHeight / 4,
+          width: screenWidth,
+          child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: [
+                ListView.builder(
+                    physics: ScrollPhysics(),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: chordList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.deepPurple, width: 1)),
+                          height: screenHeight / 4,
+                          width: screenHeight / 4,
+                          child: Column(
+                            children: [
+                              Container(
+                                color: Colors.orangeAccent,
+                                height: (screenHeight / 8) - 1,
+                              ),
+                              Container(
+                                color: Colors.deepPurpleAccent,
+                                height: (screenHeight / 8) - 1,
+                              )
+                            ],
+                          ));
+                    }),
+                Container(
+                  decoration: BoxDecoration(
+                      color: Color.fromRGBO(0, 100, 200, 0.5),
+                      border: Border.all(
+                          color: Color.fromRGBO(0, 100, 200, 0.8), width: 1)),
+                  height: screenHeight / 4,
+                  width: screenHeight / 4,
+                  child: Center(
+                      child: RichText(
+                    text: TextSpan(
+                        text: '+',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromRGBO(10, 100, 200, 0.8),
+                            fontSize: 25)),
+                  )),
+                )
+              ]),
         ),
+        // Setting Panel
         Container(
             color: backgroundColor,
             height: 3 * screenHeight / 4,
@@ -108,6 +160,34 @@ class _MyHomePageState extends State<MyHomePage> {
             )),
       ],
     ));
+  }
+}
+
+class ChordObject {
+  String trebleNote = "";
+  String trebleKey = "";
+  String trebleTension = "";
+  String trebleInversion = "";
+  String trebleArpeggios = "";
+
+  String bassNote = "";
+  String bassKey = "";
+  String bassTension = "";
+  String bassInversion = "";
+  String bassArpeggios = "";
+
+  ChordObject(tNote, tKey, tTension, tInversion, tArpeggios, bNote, bKey,
+      bTension, bInversion, bArpeggios) {
+    this.trebleNote = tNote;
+    this.trebleKey = tKey;
+    this.trebleTension = tTension;
+    this.trebleInversion = tInversion;
+    this.trebleArpeggios = tArpeggios;
+    this.bassNote = bNote;
+    this.bassKey = bKey;
+    this.bassTension = bTension;
+    this.bassInversion = bInversion;
+    this.bassArpeggios = bArpeggios;
   }
 }
 
@@ -199,6 +279,9 @@ Widget listViewSettings() {
     shrinkWrap: true,
     children: <Widget>[
       Container(
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.orangeAccent, width: 1),
+            borderRadius: BorderRadius.circular(12)),
         height: 50,
         child: Center(
             child: RichText(
