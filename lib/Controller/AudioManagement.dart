@@ -2,17 +2,17 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 class AudioManagement {
-  static void play() async {
+  static void play(List<String> chord) async {
     AudioCache audioCache = AudioCache();
     //AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
 
     AudioPlayer.logEnabled = true;
-    var parseString = ['A0', "D1", "F1", "G1"];
+    // var parseString = ['A2', "D3", "F3", "G3"];
 
     List<String> playList = new List<String>();
 
-    for (var item in parseString) {
-      playList.add("audio/" + item + ".mp3");
+    for (var item in chord) {
+      playList.add("audio/" + item + "Piano.wav");
     }
 
     for (var playItem in playList) {
