@@ -69,9 +69,6 @@ class ChordPattern {
     24: 'C6'
   };
 
-  // var test =
-  //     noteMap.keys.firstWhere((k) => noteMap[k] == 'C', orElse: () => null);
-
   static List<String> getChord(String noteString) {
     int baseNote = noteMap.keys
         .firstWhere((k) => noteMap[k] == noteString, orElse: () => null);

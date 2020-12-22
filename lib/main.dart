@@ -1,5 +1,6 @@
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:chord_progression/Controller/Settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -59,16 +60,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-//  Future<void> _incrementCounter() async {
-//      AudioCache audioCache = AudioCache();
-//      //AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
-//      AudioPlayer.logEnabled = true;
+  List<ChordObject> chordList = new List<ChordObject>();
+  Settings settings = new Settings();
 
-//      await audioCache.play("audio/A0.mp3", mode: PlayerMode.LOW_LATENCY);
-//      await audioCache.play("audio/D1.mp3", mode: PlayerMode.LOW_LATENCY);
-//      await audioCache.play("audio/F1.mp3", mode: PlayerMode.LOW_LATENCY);
-//      await audioCache.play("audio/G1.mp3", mode: PlayerMode.LOW_LATENCY);
-//    }
+  Future<void> _addChord() async {
+    setState(() {
+      chordList.add(new ChordObject("", "", "", "", "", "", "", "", "", ""));
+      settings.setCurrentChordIndex = chordList.length - 1;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,10 +84,6 @@ class _MyHomePageState extends State<MyHomePage> {
         top: BorderSide(width: panelLineWidth, color: borderColor),
         left: BorderSide(width: panelLineWidth, color: borderColor),
         bottom: BorderSide(width: panelLineWidth, color: borderColor));
-
-    List<ChordObject> chordList = new List<ChordObject>();
-    chordList
-        .add(new ChordObject("c", "c", "c", "c", "c", "c", "c", "c", "c", "c"));
 
     return Scaffold(
         body: Column(
@@ -107,41 +103,53 @@ class _MyHomePageState extends State<MyHomePage> {
                     scrollDirection: Axis.horizontal,
                     itemCount: chordList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.deepPurple, width: 1)),
-                          height: screenHeight / 4,
-                          width: screenHeight / 4,
-                          child: Column(
-                            children: [
-                              Container(
-                                color: Colors.orangeAccent,
-                                height: (screenHeight / 8) - 1,
-                              ),
-                              Container(
-                                color: Colors.deepPurpleAccent,
-                                height: (screenHeight / 8) - 1,
-                              )
-                            ],
-                          ));
+                      return InkWell(
+                        onTap: () => setState(
+                            () => settings.setCurrentChordIndex = index),
+                        child: Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Color.fromRGBO(179, 136, 255, 0.8),
+                                    width: 1)),
+                            height: screenHeight / 4,
+                            width: screenHeight / 4,
+                            child: Column(
+                              children: [
+                                Container(
+                                  color: settings.getCurrentChordIndex == index
+                                      ? Color.fromRGBO(255, 209, 128, 1)
+                                      : Color.fromRGBO(255, 209, 128, 0.5),
+                                  height: (screenHeight / 8) - 1,
+                                ),
+                                Container(
+                                  color: settings.getCurrentChordIndex == index
+                                      ? Color.fromRGBO(179, 136, 255, 1)
+                                      : Color.fromRGBO(179, 136, 255, 0.5),
+                                  height: (screenHeight / 8) - 1,
+                                )
+                              ],
+                            )),
+                      );
                     }),
-                Container(
-                  decoration: BoxDecoration(
-                      color: Color.fromRGBO(0, 100, 200, 0.5),
-                      border: Border.all(
-                          color: Color.fromRGBO(0, 100, 200, 0.8), width: 1)),
-                  height: screenHeight / 4,
-                  width: screenHeight / 4,
-                  child: Center(
-                      child: RichText(
-                    text: TextSpan(
-                        text: '+',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromRGBO(10, 100, 200, 0.8),
-                            fontSize: 25)),
-                  )),
+                InkWell(
+                  onTap: () => _addChord(),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Color.fromRGBO(0, 100, 200, 0.5),
+                        border: Border.all(
+                            color: Color.fromRGBO(0, 100, 200, 0.8), width: 1)),
+                    height: screenHeight / 4,
+                    width: screenHeight / 4,
+                    child: Center(
+                        child: RichText(
+                      text: TextSpan(
+                          text: '+',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromRGBO(10, 100, 200, 0.8),
+                              fontSize: 25)),
+                    )),
+                  ),
                 )
               ]),
         ),
