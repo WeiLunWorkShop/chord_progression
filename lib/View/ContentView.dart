@@ -1,6 +1,7 @@
 import 'package:chord_progression/Model/AppConstant.dart';
 import 'package:chord_progression/View/Settings/BeatsContent.dart';
 import 'package:chord_progression/View/Settings/KeyContent.dart';
+import 'package:chord_progression/View/Settings/TempoContent.dart';
 import 'package:flutter/material.dart';
 
 class ContentView extends StatelessWidget {
@@ -18,6 +19,9 @@ class ContentView extends StatelessWidget {
         break;
       case 2:
         return BeatsContent(instance);
+        break;
+      case 3:
+        return TempoContent(instance);
         break;
       default:
         return KeyContent(instance);

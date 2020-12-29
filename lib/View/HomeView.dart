@@ -23,8 +23,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _addChord() async {
     setState(() {
-      chordList.add(new ChordObject("", "", "", "", "", "", "", "", "", ""));
-      Settings.instance.currentChordIndex = chordList.length - 1;
+      Settings.instance.chordList
+          .add(new ChordObject("", "", "", "", "", "", "", "", "", ""));
+      Settings.instance.currentChordIndex =
+          Settings.instance.chordList.length - 1;
     });
   }
 
@@ -36,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
     double panelLineWidth = 2;
     Color borderColor = Colors.grey;
     Color backgroundColor = Colors.black;
-    Color mainColor = Color.fromRGBO(58, 221, 243, 0.5);
+    Color mainColor = Color.fromRGBO(0, 255, 255, 1);
     AudioManagement audioManagement = new AudioManagement();
 
     Border mainBorder = Border(
@@ -70,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     physics: ScrollPhysics(),
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: chordList.length,
+                    itemCount: Settings.instance.chordList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
                         onTap: () => setState(
@@ -90,6 +92,20 @@ class _MyHomePageState extends State<MyHomePage> {
                                       ? Color.fromRGBO(255, 209, 128, 1)
                                       : Color.fromRGBO(255, 209, 128, 0.5),
                                   height: (screenHeight / 8) - 1,
+                                  child: Center(
+                                      child: RichText(
+                                    text: TextSpan(
+                                        text: Settings
+                                            .instance
+                                            .chordList[Settings
+                                                .instance.currentChordIndex]
+                                            .trebleNote,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Color.fromRGBO(
+                                                10, 100, 200, 0.8),
+                                            fontSize: 25)),
+                                  )),
                                 ),
                                 Container(
                                   color: Settings.instance.currentChordIndex ==
@@ -97,6 +113,20 @@ class _MyHomePageState extends State<MyHomePage> {
                                       ? Color.fromRGBO(179, 136, 255, 1)
                                       : Color.fromRGBO(179, 136, 255, 0.5),
                                   height: (screenHeight / 8) - 1,
+                                  child: Center(
+                                      child: RichText(
+                                    text: TextSpan(
+                                        text: Settings
+                                            .instance
+                                            .chordList[Settings
+                                                .instance.currentChordIndex]
+                                            .bassNote,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Color.fromRGBO(
+                                                10, 100, 200, 0.8),
+                                            fontSize: 25)),
+                                  )),
                                 )
                               ],
                             )),

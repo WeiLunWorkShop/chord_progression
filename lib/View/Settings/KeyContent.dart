@@ -3,6 +3,8 @@ import 'package:chord_progression/Controller/Settings.dart';
 import 'package:chord_progression/Model/AppConstant.dart';
 import 'package:flutter/material.dart';
 
+enum contentType { notes, keys, tensions, inversions, arpeggios }
+
 class KeyContent extends StatelessWidget {
   final AppConstant instance;
   KeyContent(this.instance);
@@ -40,6 +42,7 @@ class KeyContent extends StatelessWidget {
                 columnWidth,
                 3,
                 getButtonHeight(settingsPanelHeight, 4),
+                contentType.notes.index,
                 instance.audioManagement)),
         // Keys
         Container(
@@ -51,6 +54,7 @@ class KeyContent extends StatelessWidget {
                 columnWidth,
                 1,
                 getButtonHeight(settingsPanelHeight, 4),
+                contentType.keys.index,
                 instance.audioManagement)),
         // Tensions
         Container(
@@ -62,6 +66,7 @@ class KeyContent extends StatelessWidget {
                 columnWidth,
                 3,
                 getButtonHeight(settingsPanelHeight, 4),
+                contentType.tensions.index,
                 instance.audioManagement)),
         // Inversions
         Container(
@@ -73,6 +78,7 @@ class KeyContent extends StatelessWidget {
                 columnWidth,
                 1,
                 getButtonHeight(settingsPanelHeight, 4),
+                contentType.inversions.index,
                 instance.audioManagement)),
         // Arpeggios
         Container(
@@ -86,6 +92,7 @@ class KeyContent extends StatelessWidget {
                 columnWidth,
                 1,
                 getButtonHeight(settingsPanelHeight, 4),
+                contentType.arpeggios.index,
                 instance.audioManagement)),
       ],
     );
@@ -95,8 +102,13 @@ class KeyContent extends StatelessWidget {
     return (height / rowCount) - 10.0;
   }
 
-  ListView listViewItems(List<String> itemList, double columnWidth,
-      int columnCount, double buttonHeight, AudioManagement audio) {
+  ListView listViewItems(
+      List<String> itemList,
+      double columnWidth,
+      int columnCount,
+      double buttonHeight,
+      int contentType,
+      AudioManagement audio) {
     Color color = Color.fromRGBO(0, 255, 255, 0.8);
     var scrollState = itemList.length > 4
         ? AlwaysScrollableScrollPhysics()
@@ -109,12 +121,82 @@ class KeyContent extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           List<String> splitItem = itemList[index].split(" ");
           List<Widget> widgetList = new List<Widget>();
+          int currentChordIndex = Settings.instance.currentChordIndex;
+          String currentSelect;
+
+          // treble
+          if (Settings.instance.currentSettingsAction == 0) {
+            switch (contentType) {
+              case 0:
+                // notes
+                currentSelect =
+                    Settings.instance.chordList[currentChordIndex].trebleNote;
+                break;
+              case 1:
+                // keys
+                currentSelect =
+                    Settings.instance.chordList[currentChordIndex].trebleKey;
+                break;
+              case 2:
+                // tensions
+                currentSelect = Settings
+                    .instance.chordList[currentChordIndex].trebleTension;
+                break;
+              case 3:
+                // inversions
+                currentSelect = Settings
+                    .instance.chordList[currentChordIndex].trebleInversion;
+                break;
+              case 4:
+                // arpeggios
+                currentSelect = Settings
+                    .instance.chordList[currentChordIndex].trebleArpeggios;
+                break;
+              default:
+                break;
+            }
+          }
+          // bass
+          else {
+            switch (contentType) {
+              case 0:
+                // notes
+                currentSelect =
+                    Settings.instance.chordList[currentChordIndex].bassNote;
+                break;
+              case 1:
+                // keys
+                currentSelect =
+                    Settings.instance.chordList[currentChordIndex].bassKey;
+                break;
+              case 2:
+                // tensions
+                currentSelect =
+                    Settings.instance.chordList[currentChordIndex].bassTension;
+                break;
+              case 3:
+                // inversions
+                currentSelect = Settings
+                    .instance.chordList[currentChordIndex].bassInversion;
+                break;
+              case 4:
+                // arpeggios
+                currentSelect = Settings
+                    .instance.chordList[currentChordIndex].bassArpeggios;
+                break;
+              default:
+                break;
+            }
+          }
 
           for (var i in splitItem) {
             widgetList.add(InkWell(
               onTap: () => Settings.instance.buttonSelect(audio, i),
               child: Container(
                   decoration: BoxDecoration(
+                      color: currentSelect == i
+                          ? Color.fromRGBO(0, 255, 255, 0.7)
+                          : Colors.transparent,
                       border: Border.all(color: color, width: 1),
                       borderRadius: BorderRadius.circular(12)),
                   height: buttonHeight,
