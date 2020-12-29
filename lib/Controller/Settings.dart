@@ -4,17 +4,29 @@ import 'package:chord_progression/Model/ChordObject.dart';
 import 'ChordPattern.dart';
 
 class Settings {
-  // ignore: non_constant_identifier_names
-  static void ButtonSelect(String note) {
-    AudioManagement.play(ChordPattern.getChord(note));
-  }
+  Settings._privateConstructor();
+  static final Settings instance = Settings._privateConstructor();
 
   ChordObject currentChord;
-  get getCurrentChord => currentChord;
-  set setCurrentChord(ChordObject obj) => this.currentChord = obj;
-
   int currentChordIndex;
-  int get getCurrentChordIndex => currentChordIndex;
-  set setCurrentChordIndex(int currentChordIndex) =>
-      this.currentChordIndex = currentChordIndex;
+  int currentSettingsAction;
+
+  void buttonSelect(AudioManagement audio, String note) {
+    audio.play(ChordPattern.getChord(note));
+    switch (instance.currentSettingsAction) {
+      case 0: //treble
+        instance.currentChord.trebleNote = note;
+        break;
+      case 1: //bass
+        instance.currentChord.bassNote = note;
+        break;
+      default:
+        break;
+    }
+  }
+
+  void actionSelect(int action) {
+    instance.currentSettingsAction = action;
+    print(action);
+  }
 }
