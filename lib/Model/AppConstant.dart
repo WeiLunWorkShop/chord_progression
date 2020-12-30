@@ -1,4 +1,3 @@
-import 'package:chord_progression/Controller/AudioManagement.dart';
 import 'package:flutter/material.dart';
 
 class AppConstant {
@@ -9,10 +8,9 @@ class AppConstant {
   Color backgroundColor;
   Color mainColor;
   Border mainBorder;
-  AudioManagement audioManagement;
 
   AppConstant(screenWidth, screenHeight, panelLineWidth, borderColor,
-      backgroundColor, mainColor, mainBorder, audioManagement) {
+      backgroundColor, mainColor, mainBorder) {
     this.screenWidth = screenWidth;
     this.screenHeight = screenHeight;
     this.panelLineWidth = panelLineWidth;
@@ -20,6 +18,5 @@ class AppConstant {
     this.backgroundColor = backgroundColor;
     this.mainColor = mainColor;
     this.mainBorder = mainBorder;
-    this.audioManagement = audioManagement;
   }
 }

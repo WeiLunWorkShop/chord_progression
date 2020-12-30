@@ -1,6 +1,9 @@
+import 'package:chord_progression/Controller/AudioManagement.dart';
 import 'package:chord_progression/View/HomeView.dart';
+import 'package:chord_progression/bloc/settings_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,13 +16,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    AudioManagement.instance.audioCache.loadAll(AudioManagement.instance.files);
     return MaterialApp(
       title: 'Chord Pro',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
+      home: BlocProvider(
+          create: (context) => SettingsBloc(), child: MyHomePage()),
     );
   }
 }

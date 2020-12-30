@@ -1,7 +1,8 @@
-import 'package:chord_progression/Controller/AudioManagement.dart';
 import 'package:chord_progression/Controller/Settings.dart';
 import 'package:chord_progression/Model/AppConstant.dart';
+import 'package:chord_progression/bloc/settings_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 enum contentType { notes, keys, tensions, inversions, arpeggios }
 
@@ -24,78 +25,102 @@ class KeyContent extends StatelessWidget {
 
     const List<String> Keys = ["△", "-", "O", "+"];
 
-    const List<String> Tensions = ["♭7 7", "♭9 9 ♯9", "11 ♯11", "♭13 13"];
+    const List<String> Tensions = [
+      "♭7 7",
+      "♭9 9 ♯9",
+      "11 ♯11",
+      "♭13 13",
+      "L♭7 L7",
+      "♭2 2 ♯2",
+      "sus4 ♯4",
+      "♭6 6"
+    ];
 
     const List<String> Inversions = ["R", "1", "2", "3"];
 
     const List<String> Arpeggios = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
-    return Row(
-      children: [
-        // Notes
-        Container(
-            decoration: BoxDecoration(
-                color: instance.backgroundColor, border: instance.mainBorder),
-            width: 3 * columnWidth,
-            child: listViewItems(
-                Notes,
-                columnWidth,
-                3,
-                getButtonHeight(settingsPanelHeight, 4),
-                contentType.notes.index,
-                instance.audioManagement)),
-        // Keys
-        Container(
-            decoration: BoxDecoration(
-                color: instance.backgroundColor, border: instance.mainBorder),
-            width: columnWidth,
-            child: listViewItems(
-                Keys,
-                columnWidth,
-                1,
-                getButtonHeight(settingsPanelHeight, 4),
-                contentType.keys.index,
-                instance.audioManagement)),
-        // Tensions
-        Container(
-            decoration: BoxDecoration(
-                color: instance.backgroundColor, border: instance.mainBorder),
-            width: 3 * columnWidth,
-            child: listViewItems(
-                Tensions,
-                columnWidth,
-                3,
-                getButtonHeight(settingsPanelHeight, 4),
-                contentType.tensions.index,
-                instance.audioManagement)),
-        // Inversions
-        Container(
-            decoration: BoxDecoration(
-                color: instance.backgroundColor, border: instance.mainBorder),
-            width: columnWidth,
-            child: listViewItems(
-                Inversions,
-                columnWidth,
-                1,
-                getButtonHeight(settingsPanelHeight, 4),
-                contentType.inversions.index,
-                instance.audioManagement)),
-        // Arpeggios
-        Container(
-            decoration: BoxDecoration(
-                border: Border.all(
-                    width: instance.panelLineWidth,
-                    color: instance.borderColor)),
-            width: columnWidth,
-            child: listViewItems(
-                Arpeggios,
-                columnWidth,
-                1,
-                getButtonHeight(settingsPanelHeight, 4),
-                contentType.arpeggios.index,
-                instance.audioManagement)),
-      ],
-    );
+    // ignore: missing_return
+    return BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
+      // ignore: close_sinks
+      final settingsBloc = BlocProvider.of<SettingsBloc>(context);
+
+      if (state is SettingsOnEvent) {
+        return Row(
+          children: [
+            // Notes
+            Container(
+                decoration: BoxDecoration(
+                    color: instance.backgroundColor,
+                    border: instance.mainBorder),
+                width: 3 * columnWidth,
+                child: listViewItems(
+                    context,
+                    Notes,
+                    columnWidth,
+                    3,
+                    getButtonHeight(settingsPanelHeight, 4),
+                    contentType.notes.index)),
+            // Keys
+            Container(
+                decoration: BoxDecoration(
+                    color: instance.backgroundColor,
+                    border: instance.mainBorder),
+                width: columnWidth,
+                child: listViewItems(
+                    context,
+                    Keys,
+                    columnWidth,
+                    1,
+                    getButtonHeight(settingsPanelHeight, 4),
+                    contentType.keys.index)),
+            // Tensions
+            Container(
+                decoration: BoxDecoration(
+                    color: instance.backgroundColor,
+                    border: instance.mainBorder),
+                width: 3 * columnWidth,
+                child: listViewItems(
+                    context,
+                    Tensions,
+                    columnWidth,
+                    3,
+                    getButtonHeight(settingsPanelHeight, 4),
+                    contentType.tensions.index)),
+            // Inversions
+            Container(
+                decoration: BoxDecoration(
+                    color: instance.backgroundColor,
+                    border: instance.mainBorder),
+                width: columnWidth,
+                child: listViewItems(
+                    context,
+                    Inversions,
+                    columnWidth,
+                    1,
+                    getButtonHeight(settingsPanelHeight, 4),
+                    contentType.inversions.index)),
+            // Arpeggios
+            Container(
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        width: instance.panelLineWidth,
+                        color: instance.borderColor)),
+                width: columnWidth,
+                child: listViewItems(
+                    context,
+                    Arpeggios,
+                    columnWidth,
+                    1,
+                    getButtonHeight(settingsPanelHeight, 4),
+                    contentType.arpeggios.index)),
+          ],
+        );
+      } else {
+        settingsBloc.add(SettingsChangeEvent());
+        return Container();
+      }
+    });
   }
 
   double getButtonHeight(double height, int rowCount) {
@@ -103,16 +128,18 @@ class KeyContent extends StatelessWidget {
   }
 
   ListView listViewItems(
+      BuildContext context,
       List<String> itemList,
       double columnWidth,
       int columnCount,
       double buttonHeight,
-      int contentType,
-      AudioManagement audio) {
+      int contentType) {
     Color color = Color.fromRGBO(0, 255, 255, 0.8);
     var scrollState = itemList.length > 4
         ? AlwaysScrollableScrollPhysics()
         : NeverScrollableScrollPhysics();
+    // ignore: close_sinks
+    final settingsBloc = BlocProvider.of<SettingsBloc>(context);
 
     return ListView.builder(
         physics: scrollState,
@@ -123,6 +150,7 @@ class KeyContent extends StatelessWidget {
           List<Widget> widgetList = new List<Widget>();
           int currentChordIndex = Settings.instance.currentChordIndex;
           String currentSelect;
+          List<String> currentTension = new List<String>();
 
           // treble
           if (Settings.instance.currentSettingsAction == 0) {
@@ -139,7 +167,7 @@ class KeyContent extends StatelessWidget {
                 break;
               case 2:
                 // tensions
-                currentSelect = Settings
+                currentTension = Settings
                     .instance.chordList[currentChordIndex].trebleTension;
                 break;
               case 3:
@@ -171,7 +199,7 @@ class KeyContent extends StatelessWidget {
                 break;
               case 2:
                 // tensions
-                currentSelect =
+                currentTension =
                     Settings.instance.chordList[currentChordIndex].bassTension;
                 break;
               case 3:
@@ -190,29 +218,40 @@ class KeyContent extends StatelessWidget {
           }
 
           for (var i in splitItem) {
-            widgetList.add(InkWell(
-              onTap: () => Settings.instance.buttonSelect(audio, i),
-              child: Container(
-                  decoration: BoxDecoration(
-                      color: currentSelect == i
-                          ? Color.fromRGBO(0, 255, 255, 0.7)
-                          : Colors.transparent,
-                      border: Border.all(color: color, width: 1),
-                      borderRadius: BorderRadius.circular(12)),
-                  height: buttonHeight,
-                  width:
-                      ((columnCount * columnWidth) / splitItem.length) - 15.0,
-                  child: Center(
-                      child: RichText(
-                    textAlign: TextAlign.justify,
-                    text: TextSpan(
-                        text: i,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: color,
-                            fontSize: 25)),
-                  ))),
-            ));
+            widgetList.add(
+              InkWell(
+                onTap: () {
+                  setButton(contentType, i);
+                  settingsBloc.add(SettingsChordButtonSelectEvent(i));
+                },
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: contentType == 2
+                            ? getButtonColor(
+                                isTension: true,
+                                button: i,
+                                selectList: currentTension)
+                            : getButtonColor(
+                                isTension: false,
+                                button: i,
+                                select: currentSelect),
+                        border: Border.all(color: color, width: 1),
+                        borderRadius: BorderRadius.circular(12)),
+                    height: buttonHeight,
+                    width:
+                        ((columnCount * columnWidth) / splitItem.length) - 15.0,
+                    child: Center(
+                        child: RichText(
+                      textAlign: TextAlign.justify,
+                      text: TextSpan(
+                          text: i,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: color,
+                              fontSize: 25)),
+                    ))),
+              ),
+            );
           }
 
           Widget wrapping = Wrap(
@@ -224,7 +263,6 @@ class KeyContent extends StatelessWidget {
           );
 
           return Container(
-              //width: splitItem.length * columnWidth,
               child: Column(
             children: [
               wrapping,
@@ -234,5 +272,106 @@ class KeyContent extends StatelessWidget {
             ],
           ));
         });
+  }
+}
+
+Color getButtonColor(
+    {@required bool isTension,
+    String button,
+    String select,
+    List<String> selectList}) {
+  if (isTension)
+    return selectList.isEmpty
+        ? Colors.transparent
+        : (selectList.contains(button)
+            ? Color.fromRGBO(0, 255, 255, 0.7)
+            : Colors.transparent);
+  else
+    return button == select
+        ? Color.fromRGBO(0, 255, 255, 0.7)
+        : Colors.transparent;
+}
+
+void setButton(int type, String button) {
+  int currentChordIndex = Settings.instance.currentChordIndex;
+  if (Settings.instance.currentSettingsAction == 0) {
+    switch (type) {
+      case 0:
+        // notes
+        Settings.instance.chordList[currentChordIndex].trebleNote =
+            Settings.instance.chordList[currentChordIndex].trebleNote == button
+                ? ""
+                : button;
+        break;
+      case 1:
+        // keys
+        Settings.instance.chordList[currentChordIndex].trebleKey = button;
+        break;
+      case 2:
+        // tensions
+        tensionSelect(true, button);
+        break;
+      case 3:
+        // inversions
+        Settings.instance.chordList[currentChordIndex].trebleInversion = button;
+        break;
+      case 4:
+        // arpeggios
+        Settings.instance.chordList[currentChordIndex].trebleArpeggios = button;
+        break;
+      default:
+        break;
+    }
+  }
+  // bass
+  else {
+    switch (type) {
+      case 0:
+        // notes
+        Settings.instance.chordList[currentChordIndex].bassNote =
+            Settings.instance.chordList[currentChordIndex].bassNote == button
+                ? ""
+                : button;
+        break;
+      case 1:
+        // keys
+        Settings.instance.chordList[currentChordIndex].bassKey = button;
+        break;
+      case 2:
+        // tensions
+        tensionSelect(false, button);
+        break;
+      case 3:
+        // inversions
+        Settings.instance.chordList[currentChordIndex].bassInversion = button;
+        break;
+      case 4:
+        // arpeggios
+        Settings.instance.chordList[currentChordIndex].bassArpeggios = button;
+        break;
+      default:
+        break;
+    }
+  }
+}
+
+void tensionSelect(bool isTreble, String select) {
+  int currentIndex = Settings.instance.currentChordIndex;
+  List<String> currentTension;
+
+  if (isTreble) {
+    currentTension = Settings.instance.chordList[currentIndex].trebleTension;
+
+    if (currentTension.contains(select))
+      Settings.instance.chordList[currentIndex].trebleTension.remove(select);
+    else
+      Settings.instance.chordList[currentIndex].trebleTension.add(select);
+  } else {
+    currentTension = Settings.instance.chordList[currentIndex].bassTension;
+
+    if (currentTension.contains(select))
+      Settings.instance.chordList[currentIndex].bassTension.remove(select);
+    else
+      Settings.instance.chordList[currentIndex].bassTension.add(select);
   }
 }

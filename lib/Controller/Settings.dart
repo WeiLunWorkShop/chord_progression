@@ -7,18 +7,20 @@ class Settings {
   Settings._privateConstructor();
   static final Settings instance = Settings._privateConstructor();
 
-  List<ChordObject> chordList = new List<ChordObject>.generate(
-      1, (index) => new ChordObject("", "", "", "", "", "", "", "", "", ""));
+  List<ChordObject> chordList =
+      new List<ChordObject>.generate(1, (index) => new ChordObject());
   int currentChordIndex = 0;
   int currentSettingsAction = 0;
+  String currentBeats = "";
+  int currentTempo = 120;
 
   void chordSelect(int chordIndex) {
     instance.currentChordIndex = chordIndex;
     print(chordIndex);
   }
 
-  void buttonSelect(AudioManagement audio, String text) {
-    audio.play(ChordPattern.getChord(text));
+  void buttonSelect(String text) {
+    AudioManagement.instance.play(ChordPattern.getChord(text));
     switch (instance.currentSettingsAction) {
       case 0: //treble
         print(text);
@@ -31,10 +33,5 @@ class Settings {
       default:
         break;
     }
-  }
-
-  void actionSelect(int action) {
-    instance.currentSettingsAction = action;
-    print(action);
   }
 }

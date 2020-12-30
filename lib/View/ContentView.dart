@@ -21,7 +21,7 @@ class ContentView extends StatelessWidget {
         return BeatsContent(instance);
         break;
       case 3:
-        return TempoContent(instance);
+        return TempoContent(instance: instance);
         break;
       default:
         return KeyContent(instance);

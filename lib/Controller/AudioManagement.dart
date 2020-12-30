@@ -2,6 +2,9 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 class AudioManagement {
+  AudioManagement._privateConstructor();
+  static final AudioManagement instance = AudioManagement._privateConstructor();
+
   AudioCache audioCache = AudioCache();
 
   List<String> files = [
@@ -55,10 +58,6 @@ class AudioManagement {
     "audio/G4Piano.wav",
     "audio/G5Piano.wav"
   ];
-
-  AudioManagement() {
-    audioCache.loadAll(files);
-  }
 
   void play(List<String> chord) async {
     //AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
