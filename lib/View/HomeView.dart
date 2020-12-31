@@ -50,9 +50,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // ignore: missing_return
     return BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
-      // ignore: close_sinks
-      final settingsBloc = BlocProvider.of<SettingsBloc>(context);
-
       if (state is SettingsOnEvent) {
         return Scaffold(
             body: Column(
@@ -73,10 +70,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         itemCount: Settings.instance.chordList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return InkWell(
-                            onTap: () {
-                              Settings.instance.currentChordIndex = index;
-                              settingsBloc.add(SettingsChangeEvent());
-                            },
+                            onTap: () =>
+                                Settings.instance.chordSelect(context, index),
                             child: Container(
                                 decoration: BoxDecoration(
                                     border: Border.all(
@@ -299,15 +294,35 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             IconButton(
                               icon: Icon(Icons.play_circle_outline),
-                              color: Colors.greenAccent,
+                              color: Settings.instance.currentPlayState == 0
+                                  ? Colors.green
+                                  : Colors.greenAccent,
                               iconSize: 50.0,
-                              onPressed: () {},
+                              onPressed: () {
+                                Settings.instance.playAll(context);
+                              },
                             ),
                             IconButton(
-                              icon: Icon(Icons.pause_circle_outline),
-                              color: Colors.limeAccent,
+                              icon: Settings.instance.currentPlayState == 2
+                                  ? Icon(Icons.stop_circle_outlined)
+                                  : Icon(Icons.pause_circle_outline),
+                              color: Settings.instance.currentPlayState == 0
+                                  ? Colors.blueGrey
+                                  : (Settings.instance.currentPlayState == 1
+                                      ? Colors.lime
+                                      : Colors.red),
                               iconSize: 50.0,
-                              onPressed: () {},
+                              onPressed: () {
+                                switch (Settings.instance.currentPlayState) {
+                                  case 1:
+                                    Settings.instance.playPause(context);
+                                    break;
+                                  case 2: //stop
+                                    break;
+                                  default:
+                                    break;
+                                }
+                              },
                             ),
                             const Divider(
                               color: Colors.grey,
@@ -317,7 +332,8 @@ class _MyHomePageState extends State<MyHomePage> {
                               icon: Icon(Icons.delete),
                               color: Colors.red,
                               iconSize: 40.0,
-                              onPressed: () {},
+                              onPressed: () =>
+                                  Settings.instance.removeChord(context),
                             ),
                           ],
                         )),

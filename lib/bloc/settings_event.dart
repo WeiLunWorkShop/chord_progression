@@ -7,7 +7,10 @@ class SettingsChangeEvent extends SettingsEvent {
   SettingsChangeEvent();
 }
 
+class SettingsChordSelectEvent extends SettingsEvent {
+  SettingsChordSelectEvent();
+}
+
 class SettingsChordButtonSelectEvent extends SettingsEvent {
-  final String text;
-  SettingsChordButtonSelectEvent(this.text);
+  SettingsChordButtonSelectEvent();
 }

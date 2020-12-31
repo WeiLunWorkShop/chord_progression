@@ -67,7 +67,7 @@ Widget listViewItems(BuildContext context, List<String> itemList,
                 Settings.instance.currentBeats = "";
               else
                 Settings.instance.currentBeats = i;
-              settingsBloc.add(SettingsChordButtonSelectEvent('C'));
+              settingsBloc.add(SettingsChordButtonSelectEvent());
             },
             child: Container(
                 decoration: BoxDecoration(

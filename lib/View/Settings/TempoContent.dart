@@ -47,7 +47,7 @@ class _TempoContent extends State<TempoContent> {
         }
       }
     }
-    print('stoped');
+
     count = 0;
     _loopActive = false;
   }

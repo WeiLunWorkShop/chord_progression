@@ -222,7 +222,7 @@ class KeyContent extends StatelessWidget {
               InkWell(
                 onTap: () {
                   setButton(contentType, i);
-                  settingsBloc.add(SettingsChordButtonSelectEvent(i));
+                  settingsBloc.add(SettingsChordButtonSelectEvent());
                 },
                 child: Container(
                     decoration: BoxDecoration(
@@ -357,19 +357,15 @@ void setButton(int type, String button) {
 
 void tensionSelect(bool isTreble, String select) {
   int currentIndex = Settings.instance.currentChordIndex;
-  List<String> currentTension;
 
   if (isTreble) {
-    currentTension = Settings.instance.chordList[currentIndex].trebleTension;
-
-    if (currentTension.contains(select))
+    if (Settings.instance.chordList[currentIndex].trebleTension
+        .contains(select))
       Settings.instance.chordList[currentIndex].trebleTension.remove(select);
     else
       Settings.instance.chordList[currentIndex].trebleTension.add(select);
   } else {
-    currentTension = Settings.instance.chordList[currentIndex].bassTension;
-
-    if (currentTension.contains(select))
+    if (Settings.instance.chordList[currentIndex].bassTension.contains(select))
       Settings.instance.chordList[currentIndex].bassTension.remove(select);
     else
       Settings.instance.chordList[currentIndex].bassTension.add(select);

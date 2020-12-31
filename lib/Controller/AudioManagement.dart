@@ -5,74 +5,71 @@ class AudioManagement {
   AudioManagement._privateConstructor();
   static final AudioManagement instance = AudioManagement._privateConstructor();
 
-  AudioCache audioCache = AudioCache();
+  AudioPlayer audioPlayer = new AudioPlayer(mode: PlayerMode.LOW_LATENCY);
+  AudioCache audioCache = AudioCache(prefix: 'assets/audio/');
 
   List<String> files = [
-    "audio/A2Piano.wav",
-    "audio/A3Piano.wav",
-    "audio/A4Piano.wav",
-    "audio/A5Piano.wav",
-    "audio/Ab2Piano.wav",
-    "audio/Ab3Piano.wav",
-    "audio/Ab4Piano.wav",
-    "audio/Ab5Piano.wav",
-    "audio/B2Piano.wav",
-    "audio/B3Piano.wav",
-    "audio/B4Piano.wav",
-    "audio/B5Piano.wav",
-    "audio/Bb2Piano.wav",
-    "audio/Bb3Piano.wav",
-    "audio/Bb4Piano.wav",
-    "audio/Bb5Piano.wav",
-    "audio/C2Piano.wav",
-    "audio/C3Piano.wav",
-    "audio/C4Piano.wav",
-    "audio/C5Piano.wav",
-    "audio/C6Piano.wav",
-    "audio/D2Piano.wav",
-    "audio/D3Piano.wav",
-    "audio/D4Piano.wav",
-    "audio/D5Piano.wav",
-    "audio/Db2Piano.wav",
-    "audio/Db3Piano.wav",
-    "audio/Db4Piano.wav",
-    "audio/Db5Piano.wav",
-    "audio/E2Piano.wav",
-    "audio/E3Piano.wav",
-    "audio/E4Piano.wav",
-    "audio/E5Piano.wav",
-    "audio/Eb2Piano.wav",
-    "audio/Eb3Piano.wav",
-    "audio/Eb4Piano.wav",
-    "audio/Eb5Piano.wav",
-    "audio/F#2Piano.wav",
-    "audio/F#3Piano.wav",
-    "audio/F#4Piano.wav",
-    "audio/F#5Piano.wav",
-    "audio/F2Piano.wav",
-    "audio/F3Piano.wav",
-    "audio/F4Piano.wav",
-    "audio/F5Piano.wav",
-    "audio/G2Piano.wav",
-    "audio/G3Piano.wav",
-    "audio/G4Piano.wav",
-    "audio/G5Piano.wav"
+    "A2Piano.wav",
+    "A3Piano.wav",
+    "A4Piano.wav",
+    "A5Piano.wav",
+    "Ab2Piano.wav",
+    "Ab3Piano.wav",
+    "Ab4Piano.wav",
+    "Ab5Piano.wav",
+    "B2Piano.wav",
+    "B3Piano.wav",
+    "B4Piano.wav",
+    "B5Piano.wav",
+    "Bb2Piano.wav",
+    "Bb3Piano.wav",
+    "Bb4Piano.wav",
+    "Bb5Piano.wav",
+    "C2Piano.wav",
+    "C3Piano.wav",
+    "C4Piano.wav",
+    "C5Piano.wav",
+    "C6Piano.wav",
+    "D2Piano.wav",
+    "D3Piano.wav",
+    "D4Piano.wav",
+    "D5Piano.wav",
+    "Db2Piano.wav",
+    "Db3Piano.wav",
+    "Db4Piano.wav",
+    "Db5Piano.wav",
+    "E2Piano.wav",
+    "E3Piano.wav",
+    "E4Piano.wav",
+    "E5Piano.wav",
+    "Eb2Piano.wav",
+    "Eb3Piano.wav",
+    "Eb4Piano.wav",
+    "Eb5Piano.wav",
+    "F#2Piano.wav",
+    "F#3Piano.wav",
+    "F#4Piano.wav",
+    "F#5Piano.wav",
+    "F2Piano.wav",
+    "F3Piano.wav",
+    "F4Piano.wav",
+    "F5Piano.wav",
+    "G2Piano.wav",
+    "G3Piano.wav",
+    "G4Piano.wav",
+    "G5Piano.wav"
   ];
 
   void play(List<String> chord) async {
-    //AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
-
     AudioPlayer.logEnabled = true;
-    // var parseString = ['A2', "D3", "F3", "G3"];
-
     List<String> playList = new List<String>();
 
     for (var item in chord) {
-      playList.add("audio/" + item + "Piano.wav");
+      playList.add(item + "Piano.wav");
     }
 
     for (var playItem in playList) {
-      await audioCache.play(playItem, mode: PlayerMode.LOW_LATENCY);
+      await this.audioCache.play(playItem, mode: PlayerMode.LOW_LATENCY);
     }
 
     // await audioCache.play("audio/D1.mp3", mode: PlayerMode.LOW_LATENCY);
