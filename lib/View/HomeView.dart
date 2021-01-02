@@ -50,6 +50,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // ignore: missing_return
     return BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
+      int currentChordSelected = Settings.instance.currentPlayState == 2
+          ? Settings.instance.tempChordIndex
+          : Settings.instance.currentChordIndex;
+
       if (state is SettingsOnEvent) {
         return Scaffold(
             body: Column(
@@ -83,9 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 child: Column(
                                   children: [
                                     Container(
-                                      color: Settings
-                                                  .instance.currentChordIndex ==
-                                              index
+                                      color: currentChordSelected == index
                                           ? Color.fromRGBO(255, 209, 128, 1)
                                           : Color.fromRGBO(255, 209, 128, 0.5),
                                       height: (screenHeight / 8) - 1,
@@ -102,9 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       )),
                                     ),
                                     Container(
-                                      color: Settings
-                                                  .instance.currentChordIndex ==
-                                              index
+                                      color: currentChordSelected == index
                                           ? Color.fromRGBO(179, 136, 255, 1)
                                           : Color.fromRGBO(179, 136, 255, 0.5),
                                       height: (screenHeight / 8) - 1,
@@ -318,6 +318,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     Settings.instance.playPause(context);
                                     break;
                                   case 2: //stop
+                                    Settings.instance.playStop(context);
                                     break;
                                   default:
                                     break;

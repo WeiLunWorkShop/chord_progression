@@ -5,8 +5,7 @@ class AudioManagement {
   AudioManagement._privateConstructor();
   static final AudioManagement instance = AudioManagement._privateConstructor();
 
-  AudioPlayer audioPlayer = new AudioPlayer(mode: PlayerMode.LOW_LATENCY);
-  AudioCache audioCache = AudioCache(prefix: 'assets/audio/');
+  AudioCache audioCache = new AudioCache(prefix: 'assets/audio/');
 
   List<String> files = [
     "A2Piano.wav",
@@ -61,7 +60,7 @@ class AudioManagement {
   ];
 
   void play(List<String> chord) async {
-    AudioPlayer.logEnabled = true;
+    AudioPlayer.logEnabled = false;
     List<String> playList = new List<String>();
 
     for (var item in chord) {

@@ -148,7 +148,9 @@ class KeyContent extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           List<String> splitItem = itemList[index].split(" ");
           List<Widget> widgetList = new List<Widget>();
-          int currentChordIndex = Settings.instance.currentChordIndex;
+          int currentChordIndex = Settings.instance.currentPlayState == 2
+              ? Settings.instance.tempChordIndex
+              : Settings.instance.currentChordIndex;
           String currentSelect;
           List<String> currentTension = new List<String>();
 
@@ -293,7 +295,9 @@ Color getButtonColor(
 }
 
 void setButton(int type, String button) {
-  int currentChordIndex = Settings.instance.currentChordIndex;
+  int currentChordIndex = Settings.instance.currentPlayState == 2
+      ? Settings.instance.tempChordIndex
+      : Settings.instance.currentChordIndex;
   if (Settings.instance.currentSettingsAction == 0) {
     switch (type) {
       case 0:
@@ -356,18 +360,22 @@ void setButton(int type, String button) {
 }
 
 void tensionSelect(bool isTreble, String select) {
-  int currentIndex = Settings.instance.currentChordIndex;
+  int currentChordIndex = Settings.instance.currentPlayState == 2
+      ? Settings.instance.tempChordIndex
+      : Settings.instance.currentChordIndex;
 
   if (isTreble) {
-    if (Settings.instance.chordList[currentIndex].trebleTension
+    if (Settings.instance.chordList[currentChordIndex].trebleTension
         .contains(select))
-      Settings.instance.chordList[currentIndex].trebleTension.remove(select);
+      Settings.instance.chordList[currentChordIndex].trebleTension
+          .remove(select);
     else
-      Settings.instance.chordList[currentIndex].trebleTension.add(select);
+      Settings.instance.chordList[currentChordIndex].trebleTension.add(select);
   } else {
-    if (Settings.instance.chordList[currentIndex].bassTension.contains(select))
-      Settings.instance.chordList[currentIndex].bassTension.remove(select);
+    if (Settings.instance.chordList[currentChordIndex].bassTension
+        .contains(select))
+      Settings.instance.chordList[currentChordIndex].bassTension.remove(select);
     else
-      Settings.instance.chordList[currentIndex].bassTension.add(select);
+      Settings.instance.chordList[currentChordIndex].bassTension.add(select);
   }
 }
