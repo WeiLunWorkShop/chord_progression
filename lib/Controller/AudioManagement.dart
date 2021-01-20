@@ -5,9 +5,12 @@ class AudioManagement {
   AudioManagement._privateConstructor();
   static final AudioManagement instance = AudioManagement._privateConstructor();
 
-  AudioCache audioCache = new AudioCache(prefix: 'assets/audio/');
+  AudioCache audioCache = new AudioCache(prefix: 'assets/audio/note/');
+  AudioCache beatCache = new AudioCache(
+      prefix: 'assets/audio/drumLoops/',
+      fixedPlayer: new AudioPlayer(mode: PlayerMode.LOW_LATENCY));
 
-  List<String> files = [
+  List<String> notes = [
     "A1Piano.wav",
     "A2Piano.wav",
     "A3Piano.wav",
@@ -70,8 +73,19 @@ class AudioManagement {
     "G6Piano.wav"
   ];
 
+  List<String> drumLoops = [
+    "Blues.wav",
+    "Electro.wav",
+    "Funk.wav",
+    "Hip-Hop.wav",
+    "House.wav",
+    "Jazz.wav",
+    "Latin.wav",
+    "Techno.wav"
+  ];
+
   void play(List<String> chord) async {
-    AudioPlayer.logEnabled = false;
+    //AudioPlayer.logEnabled = false;
     List<String> playList = new List<String>();
 
     for (var item in chord) {
@@ -85,5 +99,19 @@ class AudioManagement {
     // await audioCache.play("audio/D1.mp3", mode: PlayerMode.LOW_LATENCY);
     // await audioCache.play("audio/F1.mp3", mode: PlayerMode.LOW_LATENCY);
     // await audioCache.play("audio/G1.mp3", mode: PlayerMode.LOW_LATENCY);
+  }
+
+  void playDrum(String beat) async {
+    if (beat == "") return;
+
+    await this.beatCache.play(beat + ".wav", mode: PlayerMode.LOW_LATENCY);
+  }
+
+  void playDrumLoop(String beat) async {
+    if (beat == "") return;
+
+    //AudioPlayer beatPlayer =
+    await this.beatCache.loop(beat + ".wav", mode: PlayerMode.LOW_LATENCY);
+    //beatPlayer.setReleaseMode(ReleaseMode.LOOP);
   }
 }

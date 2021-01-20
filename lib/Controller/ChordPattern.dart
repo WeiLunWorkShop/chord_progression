@@ -139,7 +139,7 @@ class ChordPattern {
         intChordList.addAll([0, 3, 6]);
         break;
       case "+":
-        intChordList.addAll([0, 4, 7]);
+        intChordList.addAll([0, 4, 8]);
         break;
       default:
         intChordList.addAll([0, 4, 7]);

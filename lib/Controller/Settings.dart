@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:chord_progression/Controller/AudioManagement.dart';
 import 'package:chord_progression/Model/ChordObject.dart';
 import 'package:chord_progression/bloc/settings_bloc.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,7 @@ class Settings {
     this.pausePoint.start();
 
     for (int i = startPoint; i < Settings.instance.chordList.length; i++) {
+      AudioManagement.instance.playDrum(Settings.instance.currentBeats);
       chordSelect(context, i);
 
       await Future.delayed(Duration(milliseconds: getTempo()));

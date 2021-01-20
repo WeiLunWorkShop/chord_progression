@@ -1,3 +1,4 @@
+import 'package:chord_progression/Controller/AudioManagement.dart';
 import 'package:chord_progression/Controller/Settings.dart';
 import 'package:chord_progression/Model/AppConstant.dart';
 import 'package:chord_progression/bloc/settings_bloc.dart';
@@ -11,10 +12,8 @@ class BeatsContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<String> beatsStyle = [
-      "1 2 3 4",
-      "5 6 7 8",
-      "9 10 11 12",
-      "13 14 15 16"
+      "Blues Electro Funk Hip-Hop",
+      "House Jazz Latin Techno"
     ];
     double settingsPanelHeight = 3 * instance.screenHeight / 4;
     double columnWidth = instance.screenWidth / 11;
@@ -68,6 +67,8 @@ Widget listViewItems(BuildContext context, List<String> itemList,
               else
                 Settings.instance.currentBeats = i;
               settingsBloc.add(SettingsChordButtonSelectEvent());
+              AudioManagement.instance
+                  .playDrumLoop(Settings.instance.currentBeats);
             },
             child: Container(
                 decoration: BoxDecoration(
