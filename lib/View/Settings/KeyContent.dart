@@ -23,20 +23,27 @@ class KeyContent extends StatelessWidget {
       "A A♯/B♭ B",
     ];
 
-    const List<String> Keys = ["△", "-", "O", "+"];
+    // ignore: non_constant_identifier_names
+    List<String> Keys = ["Maj", "Min", "Dim", "Aug", "5th", "8ve"];
 
-    const List<String> Tensions = [
+    const List<String> TrebleTensions = [
       "♭7 7",
       "♭9 9 ♯9",
       "11 ♯11",
       "♭13 13",
-      "L♭7 L7",
       "♭2 2 ♯2",
-      "sus4 ♯4",
+      "4 ♯4",
       "♭6 6"
     ];
 
-    const List<String> Inversions = ["R", "1", "2", "3"];
+    const List<String> BassTensions = [
+      "♭7 7",
+      "♭9 9 ♯9",
+      "11 ♯11",
+      "♭13 13",
+    ];
+
+    const List<String> Inversions = ["R", "1", "2"];
 
     const List<String> Arpeggios = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
@@ -44,6 +51,11 @@ class KeyContent extends StatelessWidget {
     return BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
       // ignore: close_sinks
       final settingsBloc = BlocProvider.of<SettingsBloc>(context);
+
+      if (Settings.instance.currentSettingsAction == 0 &&
+          Settings.instance.chordList[Settings.instance.currentChordIndex]
+                  .trebleInversion ==
+              '2') Keys.removeLast();
 
       if (state is SettingsOnEvent) {
         return Row(
@@ -82,7 +94,9 @@ class KeyContent extends StatelessWidget {
                 width: 3 * columnWidth,
                 child: listViewItems(
                     context,
-                    Tensions,
+                    Settings.instance.currentSettingsAction == 0
+                        ? TrebleTensions
+                        : BassTensions,
                     columnWidth,
                     3,
                     getButtonHeight(settingsPanelHeight, 4),
@@ -250,7 +264,7 @@ class KeyContent extends StatelessWidget {
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: color,
-                              fontSize: 25)),
+                              fontSize: 20)),
                     ))),
               ),
             );

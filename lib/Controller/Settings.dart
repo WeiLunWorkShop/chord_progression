@@ -1,5 +1,4 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:chord_progression/Controller/AudioManagement.dart';
 import 'package:chord_progression/Model/ChordObject.dart';
 import 'package:chord_progression/bloc/settings_bloc.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,7 @@ class Settings {
       new List<ChordObject>.generate(1, (index) => new ChordObject());
   int currentChordIndex = 0;
   int tempChordIndex = 0;
-  int currentSettingsAction = 0;
+  int currentSettingsAction = 0; // 0: treble; 1: bass; 2: beats; 3: tempo
   String currentBeats = "";
   int currentTempo = 120;
   int currentPlayState = 0; // 0: default(rest); 1: playing; 2: pause
@@ -38,7 +37,7 @@ class Settings {
     this.pausePoint.start();
 
     for (int i = startPoint; i < Settings.instance.chordList.length; i++) {
-      AudioManagement.instance.playDrum(Settings.instance.currentBeats);
+      //AudioManagement.instance.playDrum(Settings.instance.currentBeats);
       chordSelect(context, i);
 
       await Future.delayed(Duration(milliseconds: getTempo()));

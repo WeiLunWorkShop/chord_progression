@@ -9,6 +9,7 @@ class AudioManagement {
   AudioCache beatCache = new AudioCache(
       prefix: 'assets/audio/drumLoops/',
       fixedPlayer: new AudioPlayer(mode: PlayerMode.LOW_LATENCY));
+  AudioPlayer beatPlayer = new AudioPlayer();
 
   List<String> notes = [
     "A1Piano.wav",
@@ -101,17 +102,18 @@ class AudioManagement {
     // await audioCache.play("audio/G1.mp3", mode: PlayerMode.LOW_LATENCY);
   }
 
-  void playDrum(String beat) async {
-    if (beat == "") return;
+  // void playDrum(String beat) async {
+  //   if (beat == "") return;
 
-    await this.beatCache.play(beat + ".wav", mode: PlayerMode.LOW_LATENCY);
-  }
+  //   //await this.beatCache.play(beat + ".wav", mode: PlayerMode.LOW_LATENCY);
+  // }
 
-  void playDrumLoop(String beat) async {
-    if (beat == "") return;
+  // void playDrumLoop(String beat) async {
+  //   this.beatPlayer.stop();
+  //   if (beat == "") return;
 
-    //AudioPlayer beatPlayer =
-    await this.beatCache.loop(beat + ".wav", mode: PlayerMode.LOW_LATENCY);
-    //beatPlayer.setReleaseMode(ReleaseMode.LOOP);
-  }
+  //   //this.beatPlayer =
+  //   await this.beatCache.loop(beat + ".wav", playbackRate: 2.0);
+  //   //this.beatPlayer.setPlaybackRate(playbackRate: 2.0);
+  // }
 }

@@ -27,12 +27,10 @@ class ChordPattern {
     '♯11': 18,
     '♭13': 20,
     '13': 21,
-    'L♭7': -2,
-    'L7': -1,
     '♭2': 1,
     '2': 2,
     '♯2': 3,
-    'sus4': 5,
+    '4': 5,
     '♯4': 6,
     '♭6': 8,
     '6': 9
@@ -112,10 +110,78 @@ class ChordPattern {
     31: 'G6'
   };
 
+  static Map<String, List<int>> trebleKeyInversion = {
+    'RMaj': [0, 4, 7],
+    'RMin': [0, 3, 7],
+    'RDim': [0, 3, 6],
+    'RAug': [0, 4, 8],
+    'R5th': [0, 7],
+    'R8ve': [0, 12],
+    '1Maj': [4, 7, 12],
+    '1Min': [3, 7, 12],
+    '1Dim': [3, 6, 12],
+    '1Aug': [4, 8, 12],
+    '15th': [7, 12],
+    '18ve': [-12, 0],
+    '2Maj': [-5, 0, 4],
+    '2Min': [-5, 0, 3],
+    '2Dim': [-6, 0, 3],
+    '2Aug': [-4, 0, 4],
+    '25th': [-5, 0],
+    '28ve': [],
+  };
+
+  static Map<String, List<int>> bassKeyInversion = {
+    'RMaj': [0, 7, 16],
+    'RMin': [0, 7, 15],
+    'RDim': [0, 6, 15],
+    'RAug': [0, 8, 16],
+    'R5th': [0, 7],
+    'R8ve': [0, 12],
+    '1Maj': [4, 12, 19],
+    '1Min': [3, 12, 19],
+    '1Dim': [3, 12, 18],
+    '1Aug': [4, 12, 20],
+    '15th': [7, 12],
+    '18ve': [0, 12],
+    '<2Maj': [7, 16, 24],
+    '<2Min': [7, 15, 24],
+    '<2Dim': [6, 15, 24],
+    '<2Aug': [8, 16, 24],
+    '<25th': [12, 19],
+    '<28ve': [0, 12],
+    '>2Maj': [-5, 4, 12],
+    '>2Min': [-5, 3, 12],
+    '>2Dim': [-6, 3, 12],
+    '>2Aug': [-4, 4, 12],
+    '>25th': [12, 19],
+    '>28ve': [0, 12],
+  };
+
   static List<String> getSingleChord(bool isTreble) {
     ChordObject currentChord =
         Settings.instance.chordList[Settings.instance.currentChordIndex];
-    List<int> intChordList = new List<int>();
+    String keyInversion = isTreble
+        ? currentChord.trebleInversion + currentChord.trebleKey
+        : (currentChord.bassInversion == '2'
+                ? ([
+                    'C2',
+                    'Db2',
+                    'D2',
+                    'Eb2',
+                    'E2',
+                    'F2',
+                  ].contains(currentChord.bassNote))
+                    ? '<'
+                    : '>'
+                : '') +
+            currentChord.bassInversion +
+            currentChord.bassKey;
+
+    List<int> intChordList = isTreble
+        ? trebleKeyInversion[keyInversion]
+        : bassKeyInversion[keyInversion];
+
     List<String> chordList = List<String>();
     int baseNote = noteMap.keys.firstWhere(
         (note) =>
@@ -126,51 +192,68 @@ class ChordPattern {
     // return when not treble or bass or note not selected
     if (isTreble == null || baseNote == -1) return chordList;
 
-    // generate int chord list
-    // Key
-    switch (isTreble ? currentChord.trebleKey : currentChord.bassKey) {
-      case "△":
-        intChordList.addAll([0, 4, 7]);
-        break;
-      case "-":
-        intChordList.addAll([0, 3, 7]);
-        break;
-      case "O":
-        intChordList.addAll([0, 3, 6]);
-        break;
-      case "+":
-        intChordList.addAll([0, 4, 8]);
-        break;
-      default:
-        intChordList.addAll([0, 4, 7]);
-        break;
-    }
+    // // generate int chord list
+    //   // Key
+    //   switch (currentChord.trebleKey) {
+    //     case "Maj":
+    //       intChordList.addAll([0, 4, 7]);
+    //       break;
+    //     case "Min":
+    //       intChordList.addAll([0, 3, 7]);
+    //       break;
+    //     case "Dim":
+    //       intChordList.addAll([0, 3, 6]);
+    //       break;
+    //     case "Aug":
+    //       intChordList.addAll([0, 4, 8]);
+    //       break;
+    //     case "5th":
+    //       intChordList.addAll([0, 7]);
+    //       break;
+    //     case "8ve":
+    //       intChordList.addAll([0, 12]);
+    //       break;
+    //     default:
+    //       intChordList.addAll([0, 4, 7]);
+    //       break;
+    //   }
 
-    // Inversion
-    int octave = 12;
-    switch (
-        isTreble ? currentChord.trebleInversion : currentChord.bassInversion) {
-      case '1':
-        intChordList.add(12);
-        intChordList.removeAt(0);
-        break;
-      case '2':
-        intChordList
-            .addAll([intChordList[0] + octave, intChordList[1] + octave]);
-        intChordList.removeRange(0, 1);
-        break;
-      case '3':
-        intChordList.addAll([
-          intChordList[0] + octave,
-          intChordList[1] + octave,
-          intChordList[2] + octave
-        ]);
-        intChordList.removeRange(0, 2);
-        break;
-      case 'R': // (default, no change)
-      default:
-        break;
-    }
+    // // Inversion
+    // int octave = 12;
+    // switch (
+    //     isTreble ? currentChord.trebleInversion : currentChord.bassInversion) {
+    //   case '1':
+    //       if (isTreble) {
+    //         if (currentChord.trebleKey == "8ve"){
+    //           intChordList.add(-12);
+    //           intChordList.removeAt(1);
+    //         }
+    //         else {
+    //           intChordList.add(12);
+    //           intChordList.removeAt(0);
+    //         }
+    //       }
+    //       else {
+    //         // if (currentChord.bassKey == "")
+    //       }
+    //     break;
+    //   case '2':
+    //     intChordList
+    //         .addAll([intChordList[0] + octave, intChordList[1] + octave]);
+    //     intChordList.removeRange(0, 1);
+    //     break;
+    //   case '3':
+    //     intChordList.addAll([
+    //       intChordList[0] + octave,
+    //       intChordList[1] + octave,
+    //       intChordList[2] + octave
+    //     ]);
+    //     intChordList.removeRange(0, 2);
+    //     break;
+    //   case 'R': // (default, no change)
+    //   default:
+    //     break;
+    // }
 
     // Tension
     var tensionList =

@@ -17,8 +17,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AudioManagement.instance.audioCache.loadAll(AudioManagement.instance.notes);
-    AudioManagement.instance.beatCache
-        .loadAll(AudioManagement.instance.drumLoops);
+    // AudioManagement.instance.beatCache
+    //     .loadAll(AudioManagement.instance.drumLoops);
     return MaterialApp(
       title: 'Chord Pro',
       theme: ThemeData(

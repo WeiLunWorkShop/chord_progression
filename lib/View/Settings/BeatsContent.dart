@@ -1,4 +1,3 @@
-import 'package:chord_progression/Controller/AudioManagement.dart';
 import 'package:chord_progression/Controller/Settings.dart';
 import 'package:chord_progression/Model/AppConstant.dart';
 import 'package:chord_progression/bloc/settings_bloc.dart';
@@ -67,8 +66,8 @@ Widget listViewItems(BuildContext context, List<String> itemList,
               else
                 Settings.instance.currentBeats = i;
               settingsBloc.add(SettingsChordButtonSelectEvent());
-              AudioManagement.instance
-                  .playDrumLoop(Settings.instance.currentBeats);
+              // AudioManagement.instance
+              //     .playDrumLoop(Settings.instance.currentBeats);
             },
             child: Container(
                 decoration: BoxDecoration(

@@ -218,42 +218,42 @@ class _MyHomePageState extends State<MyHomePage> {
                                 )),
                               ),
                             ),
-                            InkWell(
-                              onTap: () {
-                                setState(() =>
-                                    Settings.instance.currentSettingsAction =
-                                        actions.beats.index);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    border: Settings.instance
-                                                .currentSettingsAction ==
-                                            actions.beats.index
-                                        ? Border.all(
-                                            color: Settings.instance
-                                                        .currentBeats ==
-                                                    ""
-                                                ? Colors.blueGrey
-                                                : Colors.lightBlueAccent,
-                                            width: 1)
-                                        : null,
-                                    borderRadius: BorderRadius.circular(12)),
-                                height: 50,
-                                child: Center(
-                                    child: RichText(
-                                  text: TextSpan(
-                                      text: 'Beats',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color:
-                                              Settings.instance.currentBeats ==
-                                                      ""
-                                                  ? Colors.blueGrey
-                                                  : Colors.lightBlueAccent,
-                                          fontSize: 25)),
-                                )),
-                              ),
-                            ),
+                            // InkWell(
+                            //   onTap: () {
+                            //     setState(() =>
+                            //         Settings.instance.currentSettingsAction =
+                            //             actions.beats.index);
+                            //   },
+                            //   child: Container(
+                            //     decoration: BoxDecoration(
+                            //         border: Settings.instance
+                            //                     .currentSettingsAction ==
+                            //                 actions.beats.index
+                            //             ? Border.all(
+                            //                 color: Settings.instance
+                            //                             .currentBeats ==
+                            //                         ""
+                            //                     ? Colors.blueGrey
+                            //                     : Colors.lightBlueAccent,
+                            //                 width: 1)
+                            //             : null,
+                            //         borderRadius: BorderRadius.circular(12)),
+                            //     height: 50,
+                            //     child: Center(
+                            //         child: RichText(
+                            //       text: TextSpan(
+                            //           text: 'Beats',
+                            //           style: TextStyle(
+                            //               fontWeight: FontWeight.bold,
+                            //               color:
+                            //                   Settings.instance.currentBeats ==
+                            //                           ""
+                            //                       ? Colors.blueGrey
+                            //                       : Colors.lightBlueAccent,
+                            //               fontSize: 25)),
+                            //     )),
+                            //   ),
+                            // ),
                             SizedBox(
                               height: 15.0,
                             ),
