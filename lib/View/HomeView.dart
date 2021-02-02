@@ -294,12 +294,15 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             IconButton(
                               icon: Icon(Icons.play_circle_outline),
-                              color: Settings.instance.currentPlayState == 0
+                              color: Settings.instance.currentPlayState == 0 ||
+                                      Settings.instance.currentPlayState == 2
                                   ? Colors.green
                                   : Colors.greenAccent,
                               iconSize: 50.0,
                               onPressed: () {
-                                Settings.instance.playAll(context);
+                                if (Settings.instance.currentPlayState == 0 ||
+                                    Settings.instance.currentPlayState == 2)
+                                  Settings.instance.playAll(context);
                               },
                             ),
                             IconButton(

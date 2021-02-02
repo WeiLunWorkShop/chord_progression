@@ -91,7 +91,7 @@ class AudioManagement {
   Map<String, String> currentAudioMapList = {};
 
   void play(List<String> chord) async {
-    //AudioPlayer.logEnabled = false;
+    AudioPlayer.logEnabled = false;
     List<String> playList = new List<String>();
 
     for (var item in chord) {
