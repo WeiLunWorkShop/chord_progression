@@ -17,6 +17,7 @@ class Settings {
   int currentTempo = 120;
   int currentPlayState = 0; // 0: default(rest); 1: playing; 2: pause
   Stopwatch pausePoint = new Stopwatch();
+  int currentPlayActionCount = 0; // increase on every play
 
   void chordSelect(BuildContext context, int index) {
     AudioPlayer.players.forEach((playerId, audioPlayer) => audioPlayer.stop());
@@ -40,7 +41,7 @@ class Settings {
       //AudioManagement.instance.playDrum(Settings.instance.currentBeats);
       chordSelect(context, i);
 
-      await Future.delayed(Duration(milliseconds: getTempo()));
+      await Future.delayed(Duration(milliseconds: 4 * getTempo()));
 
       // paused
       if (this.currentPlayState == 2) {

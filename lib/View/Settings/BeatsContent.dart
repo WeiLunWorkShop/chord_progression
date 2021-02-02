@@ -15,7 +15,7 @@ class BeatsContent extends StatelessWidget {
       "House Jazz Latin Techno"
     ];
     double settingsPanelHeight = 3 * instance.screenHeight / 4;
-    double columnWidth = instance.screenWidth / 11;
+    double columnWidth = instance.screenWidth / 12;
 
     // ignore: missing_return
     return BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {

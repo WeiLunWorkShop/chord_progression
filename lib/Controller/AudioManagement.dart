@@ -1,5 +1,8 @@
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:chord_progression/Controller/Settings.dart';
+import 'package:chord_progression/Model/GrooveObject.dart';
+import 'package:chord_progression/Model/PlayingSequenceObject.dart';
 
 class AudioManagement {
   AudioManagement._privateConstructor();
@@ -85,6 +88,8 @@ class AudioManagement {
     "Techno.wav"
   ];
 
+  Map<String, String> currentAudioMapList = {};
+
   void play(List<String> chord) async {
     //AudioPlayer.logEnabled = false;
     List<String> playList = new List<String>();
@@ -94,12 +99,101 @@ class AudioManagement {
     }
 
     for (var playItem in playList) {
-      await this.audioCache.play(playItem, mode: PlayerMode.LOW_LATENCY);
+      await this.audioCache.play(playItem, mode: PlayerMode.LOW_LATENCY).then(
+          (audioPlayer) => this
+              .currentAudioMapList
+              .putIfAbsent(audioPlayer.playerId, () => playItem));
+    }
+    print(this.currentAudioMapList);
+  }
+
+  Future<void> playWithGrooves(
+      List<String> chord, String groove, int tempo) async {
+    GrooveObject playGroove = new GrooveObject().getGrooveObject(groove);
+    Settings.instance.currentPlayActionCount++;
+    int currentCount = Settings.instance.currentPlayActionCount;
+
+    List<String> xChord = new List<String>();
+    List<String> yChord = new List<String>();
+    if (["𝅗𝅥", "𝅘𝅥", "𝅗𝅥."].contains(groove)) {
+      for (int note = 0; note < chord.length; note++) {
+        if (note.isOdd)
+          xChord.add(chord[note]);
+        else
+          yChord.add(chord[note]);
+      }
     }
 
-    // await audioCache.play("audio/D1.mp3", mode: PlayerMode.LOW_LATENCY);
-    // await audioCache.play("audio/F1.mp3", mode: PlayerMode.LOW_LATENCY);
-    // await audioCache.play("audio/G1.mp3", mode: PlayerMode.LOW_LATENCY);
+    bool isX = true;
+    for (int loopCount = 0; loopCount < playGroove.playLoopTimes; loopCount++) {
+      for (int i = 0; i < playGroove.playItems.length; i++) {
+        AudioPlayer.players
+            .forEach((playerId, audioPlayer) => audioPlayer.stop());
+
+        if (["𝅗𝅥", "𝅘𝅥", "𝅗𝅥."].contains(groove)) {
+          if (isX) {
+            play(xChord);
+            isX = !isX; // flip to other chord
+          } else {
+            play(yChord);
+            isX = !isX; // flip to other chord
+          }
+        } else
+          play(chord);
+
+        await Future.delayed(Duration(
+            milliseconds: (getTempo(tempo.toDouble()) * playGroove.playItems[i])
+                .round()));
+
+        // changed player
+        if (Settings.instance.currentPlayState != 1 &&
+            currentCount != Settings.instance.currentPlayActionCount) {
+          break;
+        }
+      }
+      // changed player
+      if (Settings.instance.currentPlayState != 1 &&
+          currentCount != Settings.instance.currentPlayActionCount) {
+        break;
+      }
+    }
+
+    Settings.instance.currentPlayActionCount = 0;
+  }
+
+  double getTempo(double tempo) {
+    return ((60 / tempo) * 1000);
+  }
+
+  Future<void> playAllWithGrooves(PlayingSequenceObject playSequence) async {
+    print(playSequence.chordList);
+    print(playSequence.timingList);
+    for (int i = 0; i < playSequence.chordList.length; i++) {
+      AudioPlayer.players.forEach((playerId, audioPlayer) => {
+            if (currentAudioMapList.containsKey(playerId))
+              {
+                if (playSequence.chordList[i].contains(
+                    currentAudioMapList[playerId].replaceAll("Piano.wav", "")))
+                  {audioPlayer.stop()}
+              }
+          });
+
+      play(playSequence.chordList[i]);
+
+      await Future.delayed(Duration(
+          milliseconds: (getTempo(Settings.instance.currentTempo.toDouble()) *
+                  playSequence.timingList[i])
+              .round()));
+
+      // paused
+      if (Settings.instance.currentPlayState == 2) {
+        Settings.instance.tempChordIndex = i;
+        break;
+      } else if (i == Settings.instance.chordList.length - 1) {
+        Settings.instance.pausePoint.stop();
+        Settings.instance.pausePoint.reset();
+      }
+    }
   }
 
   // void playDrum(String beat) async {

@@ -157,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Container(
                         decoration: BoxDecoration(
                             color: backgroundColor, border: mainBorder),
-                        width: 2 * (screenWidth / 11),
+                        width: 2 * (screenWidth / 12),
                         child: ListView(
                           padding: const EdgeInsets.all(8),
                           shrinkWrap: true,

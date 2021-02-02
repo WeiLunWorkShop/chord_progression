@@ -1,19 +1,21 @@
 import 'package:chord_progression/Controller/Settings.dart';
 import 'package:chord_progression/Model/ChordObject.dart';
+import 'package:chord_progression/Model/GrooveObject.dart';
+import 'package:chord_progression/Model/PlayingSequenceObject.dart';
 
 class ChordPattern {
   static var noteMap = {
     0: 'C',
-    1: 'C♯/D♭',
+    1: 'C♯D♭',
     2: 'D',
-    3: 'D♯/E♭',
+    3: 'D♯E♭',
     4: 'E',
     5: 'F',
-    6: 'F♯/G♭',
+    6: 'F♯G♭',
     7: 'G',
-    8: 'G♯/A♭',
+    8: 'G♯A♭',
     9: 'A',
-    10: 'A♯/B♭',
+    10: 'A♯B♭',
     11: 'B'
   };
 
@@ -280,5 +282,193 @@ class ChordPattern {
     chordList.addAll(getSingleChord(false));
 
     return chordList;
+  }
+
+  static PlayingSequenceObject getPlaySequence(
+      List<String> trebleChord, List<String> bassChord) {
+    ChordObject currentChord =
+        Settings.instance.chordList[Settings.instance.currentChordIndex];
+    List<String> txChord = new List<String>();
+    List<String> tyChord = new List<String>();
+    List<String> bxChord = new List<String>();
+    List<String> byChord = new List<String>();
+
+    // check is separate chord
+    bool trebleIsSeparate = false;
+    bool bassIsSeparate = false;
+
+    print('generating chord');
+
+    // set up both chord
+    //treble
+    if (["𝅗𝅥", "𝅘𝅥", "𝅗𝅥."].contains(currentChord.trebleGrooves)) {
+      trebleIsSeparate = true;
+      for (int note = 0; note < trebleChord.length; note++) {
+        if (note.isOdd)
+          txChord.add(trebleChord[note]);
+        else
+          tyChord.add(trebleChord[note]);
+      }
+    }
+    // bass
+    if (["𝅗𝅥", "𝅘𝅥", "𝅗𝅥."].contains(currentChord.bassGrooves)) {
+      bassIsSeparate = true;
+      for (int note = 0; note < bassChord.length; note++) {
+        if (note.isOdd)
+          bxChord.add(bassChord[note]);
+        else
+          byChord.add(bassChord[note]);
+      }
+    }
+
+    // get both grooves
+    GrooveObject trebleGrooveItem =
+        new GrooveObject().getGrooveObject(currentChord.trebleGrooves);
+    GrooveObject bassGrooveItem =
+        new GrooveObject().getGrooveObject(currentChord.bassGrooves);
+    List<double> trebleGroove = trebleGrooveItem.playItems;
+    List<double> bassGroove = bassGrooveItem.playItems;
+
+    // add on groove by loop times
+    if (trebleGrooveItem.playLoopTimes > 1) {
+      List<double> tempList = new List<double>();
+      for (int i = 1; i < trebleGrooveItem.playLoopTimes; i++) {
+        tempList.addAll(trebleGrooveItem.playItems);
+      }
+      trebleGroove.addAll(tempList);
+    }
+    if (bassGrooveItem.playLoopTimes > 1) {
+      List<double> tempList = new List<double>();
+      for (int i = 1; i < bassGrooveItem.playLoopTimes; i++) {
+        tempList.addAll(bassGrooveItem.playItems);
+      }
+      bassGroove.addAll(tempList);
+    }
+
+    List<List<String>> resultChord = new List<List<String>>();
+    List<double> resultGroove = new List<double>();
+    // start with 0
+    int treblePoint = 0;
+    int bassPoint = 0;
+    double trebleTiming = 0;
+    double bassTiming = 0;
+    double mainTiming = 0;
+    bool tIsX = true;
+    bool bIsX = true;
+
+    // while the mainTiming is not full
+    while (mainTiming < 4.0) {
+      print('mainTiming: ' + mainTiming.toString());
+      // bass longer than trable
+      if (trebleTiming < bassTiming) {
+        print('treble');
+        mainTiming += trebleGroove[treblePoint];
+
+        // set result
+        resultGroove.add(trebleGroove[treblePoint]);
+        resultChord
+            .add(trebleIsSeparate ? (tIsX ? txChord : tyChord) : trebleChord);
+
+        // set chord item
+        tIsX = !tIsX;
+
+        // set treble total timing
+        trebleTiming += trebleGroove[treblePoint];
+
+        // if not last item
+        if (treblePoint < trebleGroove.length - 1) {
+          // set treble point
+          treblePoint++;
+        }
+      }
+      // treble longer than bass
+      else if (trebleTiming > bassTiming) {
+        print('bass');
+        mainTiming += bassGroove[bassPoint];
+
+        // set result
+        resultGroove.add(bassGroove[bassPoint]);
+        resultChord
+            .add(bassIsSeparate ? (bIsX ? bxChord : byChord) : bassChord);
+
+        // set chord item
+        bIsX = !bIsX;
+
+        // set bass total timing
+        bassTiming += bassGroove[bassPoint];
+
+        // if not last item
+        if (bassPoint < bassGroove.length - 1) {
+          // set basspoint
+          bassPoint++;
+        }
+      }
+      // treble equal to bass
+      else {
+        print('same');
+        // adding combined chord
+        List<String> tempChord = new List<String>();
+        tempChord
+            .addAll(bassIsSeparate ? (bIsX ? bxChord : byChord) : bassChord);
+        tempChord.addAll(
+            trebleIsSeparate ? (tIsX ? txChord : tyChord) : trebleChord);
+
+        // set main timing
+        double diffTiming = trebleGroove[treblePoint] < bassGroove[bassPoint]
+            ? trebleGroove[treblePoint]
+            : bassGroove[bassPoint];
+        mainTiming += diffTiming;
+
+        // set result
+        resultChord.add(tempChord);
+        resultGroove.add(diffTiming);
+
+        // set chord item
+        tIsX = !tIsX;
+
+        // set played
+        trebleTiming += trebleGroove[treblePoint];
+        bassTiming += bassGroove[bassPoint];
+
+        // choose which come first
+        // treble first
+        if (trebleGroove[treblePoint] < bassGroove[bassPoint]) {
+          // if treble not last item
+          if (treblePoint < trebleGroove.length - 1) {
+            // set treble point
+            treblePoint++;
+          }
+        }
+        // bass first
+        else if (trebleGroove[treblePoint] > bassGroove[bassPoint]) {
+          // if not last item
+          if (bassPoint < bassGroove.length - 1) {
+            // set basspoint
+            bassPoint++;
+          }
+        }
+        // same
+        else {
+          // if treble not last item
+          if (treblePoint < trebleGroove.length - 1) {
+            // set treble point
+            treblePoint++;
+          }
+          // if not last item
+          if (bassPoint < bassGroove.length - 1) {
+            // set basspoint
+            bassPoint++;
+          }
+        }
+      }
+    }
+
+    print('trebleTiming: ' + trebleTiming.toString());
+    print('bassTiming: ' + bassTiming.toString());
+    print('mainTiming: ' + mainTiming.toString());
+    print(resultChord);
+    print(resultGroove);
+    return new PlayingSequenceObject(
+        chordList: resultChord, timingList: resultGroove);
   }
 }

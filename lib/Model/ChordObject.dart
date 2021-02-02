@@ -3,13 +3,13 @@ class ChordObject {
   String trebleKey = "Maj";
   List<String> trebleTension = new List<String>();
   String trebleInversion = "R";
-  String trebleArpeggios = "1";
+  String trebleGrooves = "𝅝";
 
   String bassNote = "";
   String bassKey = "Maj";
   List<String> bassTension = new List<String>();
   String bassInversion = "R";
-  String bassArpeggios = "1";
+  String bassGrooves = "𝅝";
 
   ChordObject(
       {tNote,

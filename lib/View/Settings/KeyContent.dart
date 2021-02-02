@@ -13,14 +13,14 @@ class KeyContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double settingsPanelHeight = 3 * instance.screenHeight / 4;
-    double columnWidth = instance.screenWidth / 11;
+    double columnWidth = instance.screenWidth / 12;
 
     // List
     const List<String> Notes = [
-      "C C♯/D♭ D",
-      "D♯/E♭ E F",
-      "F♯/G♭ G G♯/A♭",
-      "A A♯/B♭ B",
+      "C C♯D♭ D",
+      "D♯E♭ E F",
+      "F♯G♭ G G♯A♭",
+      "A A♯B♭ B",
     ];
 
     // ignore: non_constant_identifier_names
@@ -45,7 +45,20 @@ class KeyContent extends StatelessWidget {
 
     const List<String> Inversions = ["R", "1", "2"];
 
-    const List<String> Arpeggios = ["1", "2", "3", "4", "5", "6", "7", "8"];
+    const List<String> Grooves = [
+      "𝅝",
+      "𝅗𝅥",
+      "𝅘𝅥",
+      "𝅗𝅥.",
+      "𝅘𝅥𝅮𝅘𝅥𝅮𝅘𝅥𝅮𝅘𝅥𝅮",
+      "𝅘𝅥𝅘𝅥𝅮𝅘𝅥𝅮",
+      "𝅘𝅥𝅮𝅘𝅥𝅮𝅘𝅥",
+      "𝅘𝅥𝅮𝅘𝅥𝅘𝅥𝅮",
+      "𝅘𝅥𝅯𝅘𝅥𝅯𝅘𝅥𝅯𝅘𝅥𝅯",
+      "𝅘𝅥𝅮𝅘𝅥𝅯𝅘𝅥𝅯",
+      "𝅘𝅥𝅯𝅘𝅥𝅯𝅘𝅥𝅮",
+      "𝅘𝅥𝅯𝅘𝅥𝅮𝅘𝅥𝅯"
+    ];
 
     // ignore: missing_return
     return BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
@@ -114,18 +127,18 @@ class KeyContent extends StatelessWidget {
                     1,
                     getButtonHeight(settingsPanelHeight, 4),
                     contentType.inversions.index)),
-            // Arpeggios
+            // grooves
             Container(
                 decoration: BoxDecoration(
                     border: Border.all(
                         width: instance.panelLineWidth,
                         color: instance.borderColor)),
-                width: columnWidth,
+                width: 2 * columnWidth,
                 child: listViewItems(
                     context,
-                    Arpeggios,
+                    Grooves,
                     columnWidth,
-                    1,
+                    2,
                     getButtonHeight(settingsPanelHeight, 4),
                     contentType.arpeggios.index)),
           ],
@@ -192,9 +205,9 @@ class KeyContent extends StatelessWidget {
                     .instance.chordList[currentChordIndex].trebleInversion;
                 break;
               case 4:
-                // arpeggios
+                // grooves
                 currentSelect = Settings
-                    .instance.chordList[currentChordIndex].trebleArpeggios;
+                    .instance.chordList[currentChordIndex].trebleGrooves;
                 break;
               default:
                 break;
@@ -224,9 +237,9 @@ class KeyContent extends StatelessWidget {
                     .instance.chordList[currentChordIndex].bassInversion;
                 break;
               case 4:
-                // arpeggios
-                currentSelect = Settings
-                    .instance.chordList[currentChordIndex].bassArpeggios;
+                // grooves
+                currentSelect =
+                    Settings.instance.chordList[currentChordIndex].bassGrooves;
                 break;
               default:
                 break;
@@ -264,7 +277,16 @@ class KeyContent extends StatelessWidget {
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: color,
-                              fontSize: 20)),
+                              fontSize: [
+                                "Maj",
+                                "Min",
+                                "Dim",
+                                "Aug",
+                                "5th",
+                                "8ve"
+                              ].contains(i)
+                                  ? 20
+                                  : 25)),
                     ))),
               ),
             );
@@ -334,8 +356,8 @@ void setButton(int type, String button) {
         Settings.instance.chordList[currentChordIndex].trebleInversion = button;
         break;
       case 4:
-        // arpeggios
-        Settings.instance.chordList[currentChordIndex].trebleArpeggios = button;
+        // grooves
+        Settings.instance.chordList[currentChordIndex].trebleGrooves = button;
         break;
       default:
         break;
@@ -364,8 +386,8 @@ void setButton(int type, String button) {
         Settings.instance.chordList[currentChordIndex].bassInversion = button;
         break;
       case 4:
-        // arpeggios
-        Settings.instance.chordList[currentChordIndex].bassArpeggios = button;
+        // grooves
+        Settings.instance.chordList[currentChordIndex].bassGrooves = button;
         break;
       default:
         break;
@@ -383,13 +405,23 @@ void tensionSelect(bool isTreble, String select) {
         .contains(select))
       Settings.instance.chordList[currentChordIndex].trebleTension
           .remove(select);
-    else
+    else if (Settings
+            .instance.chordList[currentChordIndex].trebleTension.length >=
+        2) {
+      Settings.instance.chordList[currentChordIndex].trebleTension.removeLast();
+      Settings.instance.chordList[currentChordIndex].trebleTension.add(select);
+    } else
       Settings.instance.chordList[currentChordIndex].trebleTension.add(select);
   } else {
     if (Settings.instance.chordList[currentChordIndex].bassTension
         .contains(select))
       Settings.instance.chordList[currentChordIndex].bassTension.remove(select);
-    else
+    else if (Settings
+            .instance.chordList[currentChordIndex].bassTension.length >=
+        2) {
+      Settings.instance.chordList[currentChordIndex].bassTension.removeLast();
+      Settings.instance.chordList[currentChordIndex].bassTension.add(select);
+    } else
       Settings.instance.chordList[currentChordIndex].bassTension.add(select);
   }
 }

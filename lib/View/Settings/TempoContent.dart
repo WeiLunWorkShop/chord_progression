@@ -54,7 +54,7 @@ class _TempoContent extends State<TempoContent> {
 
   @override
   Widget build(BuildContext context) {
-    double columnWidth = widget.instance.screenWidth / 11;
+    double columnWidth = widget.instance.screenWidth / 12;
 
     // ignore: missing_return
     return BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
