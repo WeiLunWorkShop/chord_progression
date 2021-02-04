@@ -4,7 +4,7 @@ import 'package:chord_progression/Model/GrooveObject.dart';
 import 'package:chord_progression/Model/PlayingSequenceObject.dart';
 
 class ChordPattern {
-  static var noteMap = {
+  static const Map<int, String> noteMap = {
     0: 'C',
     1: 'C♯D♭',
     2: 'D',
@@ -19,7 +19,7 @@ class ChordPattern {
     11: 'B'
   };
 
-  static var tensionMap = {
+  static const Map<String, int> tensionMap = {
     '♭7': 10,
     '7': 11,
     '♭9': 13,
@@ -38,7 +38,7 @@ class ChordPattern {
     '6': 9
   };
 
-  static var bassMap = {
+  static const Map<int, String> bassMap = {
     -2: 'Bb1',
     -1: 'B1',
     0: 'C2',
@@ -75,7 +75,7 @@ class ChordPattern {
     31: 'G4',
   };
 
-  static var trebleMap = {
+  static const Map<int, String> trebleMap = {
     -2: 'Bb3',
     -1: 'B3',
     0: 'C4',
@@ -112,7 +112,7 @@ class ChordPattern {
     31: 'G6'
   };
 
-  static Map<String, List<int>> trebleKeyInversion = {
+  static const Map<String, List<int>> trebleKeyInversion = {
     'RMaj': [0, 4, 7],
     'RMin': [0, 3, 7],
     'RDim': [0, 3, 6],
@@ -133,7 +133,7 @@ class ChordPattern {
     '28ve': [],
   };
 
-  static Map<String, List<int>> bassKeyInversion = {
+  static const Map<String, List<int>> bassKeyInversion = {
     'RMaj': [0, 7, 16],
     'RMin': [0, 7, 15],
     'RDim': [0, 6, 15],
@@ -181,8 +181,8 @@ class ChordPattern {
             currentChord.bassKey;
 
     List<int> intChordList = isTreble
-        ? trebleKeyInversion[keyInversion]
-        : bassKeyInversion[keyInversion];
+        ? trebleKeyInversion[keyInversion].toList()
+        : bassKeyInversion[keyInversion].toList();
 
     List<String> chordList = List<String>();
     int baseNote = noteMap.keys.firstWhere(
@@ -193,69 +193,6 @@ class ChordPattern {
 
     // return when not treble or bass or note not selected
     if (isTreble == null || baseNote == -1) return chordList;
-
-    // // generate int chord list
-    //   // Key
-    //   switch (currentChord.trebleKey) {
-    //     case "Maj":
-    //       intChordList.addAll([0, 4, 7]);
-    //       break;
-    //     case "Min":
-    //       intChordList.addAll([0, 3, 7]);
-    //       break;
-    //     case "Dim":
-    //       intChordList.addAll([0, 3, 6]);
-    //       break;
-    //     case "Aug":
-    //       intChordList.addAll([0, 4, 8]);
-    //       break;
-    //     case "5th":
-    //       intChordList.addAll([0, 7]);
-    //       break;
-    //     case "8ve":
-    //       intChordList.addAll([0, 12]);
-    //       break;
-    //     default:
-    //       intChordList.addAll([0, 4, 7]);
-    //       break;
-    //   }
-
-    // // Inversion
-    // int octave = 12;
-    // switch (
-    //     isTreble ? currentChord.trebleInversion : currentChord.bassInversion) {
-    //   case '1':
-    //       if (isTreble) {
-    //         if (currentChord.trebleKey == "8ve"){
-    //           intChordList.add(-12);
-    //           intChordList.removeAt(1);
-    //         }
-    //         else {
-    //           intChordList.add(12);
-    //           intChordList.removeAt(0);
-    //         }
-    //       }
-    //       else {
-    //         // if (currentChord.bassKey == "")
-    //       }
-    //     break;
-    //   case '2':
-    //     intChordList
-    //         .addAll([intChordList[0] + octave, intChordList[1] + octave]);
-    //     intChordList.removeRange(0, 1);
-    //     break;
-    //   case '3':
-    //     intChordList.addAll([
-    //       intChordList[0] + octave,
-    //       intChordList[1] + octave,
-    //       intChordList[2] + octave
-    //     ]);
-    //     intChordList.removeRange(0, 2);
-    //     break;
-    //   case 'R': // (default, no change)
-    //   default:
-    //     break;
-    // }
 
     // Tension
     var tensionList =
@@ -268,18 +205,6 @@ class ChordPattern {
 
     // loop int list
     intChordList.forEach((note) => chordList.add(currentMap[baseNote + note]));
-
-    return chordList;
-  }
-
-  static List<String> getWholeChord() {
-    List<String> chordList = new List<String>();
-
-    // get treble chord
-    chordList.addAll(getSingleChord(true));
-
-    // get bass chord
-    chordList.addAll(getSingleChord(false));
 
     return chordList;
   }

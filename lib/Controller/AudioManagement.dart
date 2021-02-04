@@ -90,6 +90,14 @@ class AudioManagement {
 
   Map<String, String> currentAudioMapList = {};
 
+  Future<void> loadAllWithSilence() async {
+    for (var playItem in notes) {
+      await this
+          .audioCache
+          .play(playItem, mode: PlayerMode.LOW_LATENCY, volume: 0.0);
+    }
+  }
+
   void play(List<String> chord) async {
     AudioPlayer.logEnabled = false;
     List<String> playList = new List<String>();
@@ -104,7 +112,6 @@ class AudioManagement {
               .currentAudioMapList
               .putIfAbsent(audioPlayer.playerId, () => playItem));
     }
-    print(this.currentAudioMapList);
   }
 
   Future<void> playWithGrooves(
@@ -131,13 +138,11 @@ class AudioManagement {
             .forEach((playerId, audioPlayer) => audioPlayer.stop());
 
         if (["𝅗𝅥", "𝅘𝅥", "𝅗𝅥."].contains(groove)) {
-          if (isX) {
+          if (isX)
             play(xChord);
-            isX = !isX; // flip to other chord
-          } else {
+          else
             play(yChord);
-            isX = !isX; // flip to other chord
-          }
+          isX = !isX; // flip to other chord
         } else
           play(chord);
 

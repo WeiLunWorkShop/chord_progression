@@ -16,7 +16,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    AudioManagement.instance.audioCache.loadAll(AudioManagement.instance.notes);
+    AudioManagement.instance.loadAllWithSilence();
+    //AudioManagement.instance.audioCache.loadAll(AudioManagement.instance.notes);
     // AudioManagement.instance.beatCache
     //     .loadAll(AudioManagement.instance.drumLoops);
     return MaterialApp(
