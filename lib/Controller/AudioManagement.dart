@@ -85,6 +85,18 @@ class AudioManagement {
     "Techno.wav"
   ];
 
+  AudioManagement() {
+    this.audioCache.loadAll(notes);
+  }
+
+  Future<void> loadAllWithSilence() async {
+    for (var playItem in notes) {
+      await this
+          .audioCache
+          .play(playItem, mode: PlayerMode.LOW_LATENCY, volume: 0.0);
+    }
+  }
+
   void play(List<String> chord) async {
     //AudioPlayer.logEnabled = false;
     List<String> playList = new List<String>();

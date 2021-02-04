@@ -374,6 +374,7 @@ void setButton(int type, String button) {
 }
 
 void tensionSelect(bool isTreble, String select) {
+  // check player play state
   int currentChordIndex = Settings.instance.currentPlayState == 2
       ? Settings.instance.tempChordIndex
       : Settings.instance.currentChordIndex;
@@ -383,13 +384,23 @@ void tensionSelect(bool isTreble, String select) {
         .contains(select))
       Settings.instance.chordList[currentChordIndex].trebleTension
           .remove(select);
-    else
+    else if (Settings
+            .instance.chordList[currentChordIndex].trebleTension.length >=
+        2) {
+      Settings.instance.chordList[currentChordIndex].trebleTension.removeLast();
+      Settings.instance.chordList[currentChordIndex].trebleTension.add(select);
+    } else
       Settings.instance.chordList[currentChordIndex].trebleTension.add(select);
   } else {
     if (Settings.instance.chordList[currentChordIndex].bassTension
         .contains(select))
       Settings.instance.chordList[currentChordIndex].bassTension.remove(select);
-    else
+    else if (Settings
+            .instance.chordList[currentChordIndex].bassTension.length >=
+        2) {
+      Settings.instance.chordList[currentChordIndex].bassTension.removeLast();
+      Settings.instance.chordList[currentChordIndex].bassTension.add(select);
+    } else
       Settings.instance.chordList[currentChordIndex].bassTension.add(select);
   }
 }

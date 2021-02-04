@@ -17,7 +17,7 @@ class ChordPattern {
     11: 'B'
   };
 
-  static var tensionMap = {
+  static const Map<String, int> tensionMap = {
     '♭7': 10,
     '7': 11,
     '♭9': 13,
@@ -36,7 +36,7 @@ class ChordPattern {
     '6': 9
   };
 
-  static var bassMap = {
+  static const Map<int, String> bassMap = {
     -2: 'Bb1',
     -1: 'B1',
     0: 'C2',
@@ -73,7 +73,7 @@ class ChordPattern {
     31: 'G4',
   };
 
-  static var trebleMap = {
+  static const Map<int, String> trebleMap = {
     -2: 'Bb3',
     -1: 'B3',
     0: 'C4',
@@ -110,7 +110,7 @@ class ChordPattern {
     31: 'G6'
   };
 
-  static Map<String, List<int>> trebleKeyInversion = {
+  static const Map<String, List<int>> trebleKeyInversion = {
     'RMaj': [0, 4, 7],
     'RMin': [0, 3, 7],
     'RDim': [0, 3, 6],
@@ -131,7 +131,7 @@ class ChordPattern {
     '28ve': [],
   };
 
-  static Map<String, List<int>> bassKeyInversion = {
+  static const Map<String, List<int>> bassKeyInversion = {
     'RMaj': [0, 7, 16],
     'RMin': [0, 7, 15],
     'RDim': [0, 6, 15],
@@ -179,8 +179,8 @@ class ChordPattern {
             currentChord.bassKey;
 
     List<int> intChordList = isTreble
-        ? trebleKeyInversion[keyInversion]
-        : bassKeyInversion[keyInversion];
+        ? trebleKeyInversion[keyInversion].toList()
+        : bassKeyInversion[keyInversion].toList();
 
     List<String> chordList = List<String>();
     int baseNote = noteMap.keys.firstWhere(
