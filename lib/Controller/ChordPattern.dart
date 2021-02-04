@@ -192,69 +192,6 @@ class ChordPattern {
     // return when not treble or bass or note not selected
     if (isTreble == null || baseNote == -1) return chordList;
 
-    // // generate int chord list
-    //   // Key
-    //   switch (currentChord.trebleKey) {
-    //     case "Maj":
-    //       intChordList.addAll([0, 4, 7]);
-    //       break;
-    //     case "Min":
-    //       intChordList.addAll([0, 3, 7]);
-    //       break;
-    //     case "Dim":
-    //       intChordList.addAll([0, 3, 6]);
-    //       break;
-    //     case "Aug":
-    //       intChordList.addAll([0, 4, 8]);
-    //       break;
-    //     case "5th":
-    //       intChordList.addAll([0, 7]);
-    //       break;
-    //     case "8ve":
-    //       intChordList.addAll([0, 12]);
-    //       break;
-    //     default:
-    //       intChordList.addAll([0, 4, 7]);
-    //       break;
-    //   }
-
-    // // Inversion
-    // int octave = 12;
-    // switch (
-    //     isTreble ? currentChord.trebleInversion : currentChord.bassInversion) {
-    //   case '1':
-    //       if (isTreble) {
-    //         if (currentChord.trebleKey == "8ve"){
-    //           intChordList.add(-12);
-    //           intChordList.removeAt(1);
-    //         }
-    //         else {
-    //           intChordList.add(12);
-    //           intChordList.removeAt(0);
-    //         }
-    //       }
-    //       else {
-    //         // if (currentChord.bassKey == "")
-    //       }
-    //     break;
-    //   case '2':
-    //     intChordList
-    //         .addAll([intChordList[0] + octave, intChordList[1] + octave]);
-    //     intChordList.removeRange(0, 1);
-    //     break;
-    //   case '3':
-    //     intChordList.addAll([
-    //       intChordList[0] + octave,
-    //       intChordList[1] + octave,
-    //       intChordList[2] + octave
-    //     ]);
-    //     intChordList.removeRange(0, 2);
-    //     break;
-    //   case 'R': // (default, no change)
-    //   default:
-    //     break;
-    // }
-
     // Tension
     var tensionList =
         isTreble ? currentChord.trebleTension : currentChord.bassTension;
