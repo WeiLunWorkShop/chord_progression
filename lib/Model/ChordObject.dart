@@ -1,12 +1,12 @@
 class ChordObject {
   String trebleNote = "";
-  String trebleKey = "Maj";
+  String trebleKey = "";
   List<String> trebleTension = new List<String>();
   String trebleInversion = "R";
   String trebleGrooves = "𝅝";
 
   String bassNote = "";
-  String bassKey = "Maj";
+  String bassKey = "";
   List<String> bassTension = new List<String>();
   String bassInversion = "R";
   String bassGrooves = "𝅝";

@@ -174,6 +174,8 @@ class AudioManagement {
     print(playSequence.chordList);
     print(playSequence.timingList);
     for (int i = 0; i < playSequence.chordList.length; i++) {
+      play(playSequence.chordList[i]);
+
       AudioPlayer.players.forEach((playerId, audioPlayer) => {
             if (currentAudioMapList.containsKey(playerId))
               {
@@ -182,8 +184,6 @@ class AudioManagement {
                   {audioPlayer.stop()}
               }
           });
-
-      play(playSequence.chordList[i]);
 
       await Future.delayed(Duration(
           milliseconds: (getTempo(Settings.instance.currentTempo.toDouble()) *

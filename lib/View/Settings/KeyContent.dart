@@ -60,6 +60,17 @@ class KeyContent extends StatelessWidget {
       "𝅘𝅥𝅯𝅘𝅥𝅮𝅘𝅥𝅯"
     ];
 
+    const List<String> BassGrooves = [
+      "𝅝",
+      "𝅗𝅥",
+      "𝅘𝅥",
+      "𝅗𝅥.",
+      "𝅘𝅥𝅮𝅘𝅥𝅮𝅘𝅥𝅮𝅘𝅥𝅮",
+      "𝅘𝅥𝅘𝅥𝅮𝅘𝅥𝅮",
+      "𝅘𝅥𝅮𝅘𝅥𝅮𝅘𝅥",
+      "𝅘𝅥𝅮𝅘𝅥𝅘𝅥𝅮",
+    ];
+
     // ignore: missing_return
     return BlocBuilder<SettingsBloc, SettingsState>(builder: (context, state) {
       // ignore: close_sinks
@@ -136,7 +147,9 @@ class KeyContent extends StatelessWidget {
                 width: 2 * columnWidth,
                 child: listViewItems(
                     context,
-                    Grooves,
+                    Settings.instance.currentSettingsAction == 0
+                        ? Grooves
+                        : BassGrooves,
                     columnWidth,
                     2,
                     getButtonHeight(settingsPanelHeight, 4),

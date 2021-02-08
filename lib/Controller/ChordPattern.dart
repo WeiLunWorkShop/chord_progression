@@ -113,6 +113,9 @@ class ChordPattern {
   };
 
   static const Map<String, List<int>> trebleKeyInversion = {
+    'R': [0],
+    '1': [0],
+    '2': [0],
     'RMaj': [0, 4, 7],
     'RMin': [0, 3, 7],
     'RDim': [0, 3, 6],
@@ -134,6 +137,9 @@ class ChordPattern {
   };
 
   static const Map<String, List<int>> bassKeyInversion = {
+    'R': [0],
+    '1': [0],
+    '2': [0],
     'RMaj': [0, 7, 16],
     'RMin': [0, 7, 15],
     'RDim': [0, 6, 15],
